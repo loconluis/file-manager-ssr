@@ -17,12 +17,14 @@ body {
   flex-direction: column;
 }
 
-.finderContainer__workzone-title {
+.finderContainer__workzone-toolbar {
+  display: flex;
+  justify-content: space-between;
   height: 5vh;
   border: 1px solid cyan;
 }
 
-.finderContainer__workzone-title p, .finderContainer__workzone-footer p{
+.finderContainer__workzone-toolbar__title p, .finderContainer__workzone-footer p{
   margin: 0;
   line-height: 2em;
   padding-left: 10px;

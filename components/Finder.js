@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
-import Cardy from './Cardy'
+import Toolbar from './Toolbar'
+import Container from './Container'
+import Path from './Path'
+import Detail from './Detail'
 import '../styles/_finder.css'
 
 export default class Finder extends Component {
@@ -38,39 +41,20 @@ export default class Finder extends Component {
     return (
       <div className="finderContainer">
           <div className="finderContainer__workzone">
-            <div className="finderContainer__workzone-title">
-              <p>{this.state.path.slice(-1)[0]}</p>
-            </div>
-            <div className="finderContainer__workzone-work">
-              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {
-                  this.state._node2Show.map((_node, i) => (
-                    <Cardy
-                      key={`cardy_${i}`}
-                      selectLeaf={this.showDetail}
-                      onDoubleClick={this.handleDoubleClick}
-                      node={_node}
-                      buttonClick={this.handleOnClickButton}
-                    >
-                      {_node.label}
-                    </Cardy>  
-                  ))
-                }                        
-              </div>
-            </div>
-            <div className="finderContainer__workzone-footer">
-              <p>{this.state.path.join(' / ')}</p>
-            </div>
+            <Toolbar title={this.state.path.slice(-1)[0]}/>
+            <Container 
+              nodes={this.state._node2Show}
+              showDetail={this.showDetail}
+              handleDoubleClick={this.handleDoubleClick}
+              handleOnClickButton={this.handleOnClickButton}
+            />
+            <Path path={this.state.path}/>
           </div>
-          {this.state.show && <div className="finderContainer__detailContainer">
-            <span
-              style={{ cursor: 'pointer', fontSize: '20px', paddingLeft: '10px' }}
-              onClick={this.showDetail}
-            >&times;</span>
-            <div>
-              {JSON.stringify(this.state.clickNode, undefined, 2)}
-            </div>
-          </div>}
+          {this.state.show && 
+            <Detail
+              node={this.state.clickNode}
+              showDetail={this.showDetail}
+            />}
       </div>
     )
   }
