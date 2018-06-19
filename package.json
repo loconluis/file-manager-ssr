@@ -1,0 +1,20 @@
+{
+  "name": "ssr-finderjs",
+  "version": "0.1.0",
+  "description": "Aproch to file manager",
+  "main": "index.js",
+  "scripts": {
+    "start": "next start",
+    "dev": "next",
+    "build": "next build"
+  },
+  "author": "Luis Locon <luis.locon@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@zeit/next-css": "^0.2.0",
+    "@zeit/next-sass": "^0.2.0",
+    "next": "^6.0.3",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1"
+  }
+}

@@ -1,0 +1,56 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+
+.finderContainer {
+  border: 1px solid red;
+  height: 100vh; 
+  display: flex;
+}
+
+.finderContainer__workzone {
+  display: flex;
+  width: 100vw;
+  flex-direction: column;
+}
+
+.finderContainer__workzone-title {
+  height: 5vh;
+  border: 1px solid cyan;
+}
+
+.finderContainer__workzone-title p{
+  margin: 0;
+  line-height: 2em;
+  padding-left: 10px;
+  color: #0366d6;
+} 
+.finderContainer__workzone-work {
+  padding: 20px 35px;
+  height: 95vh;
+  border: 1px solid gold;
+}
+
+.finderContainer__detailContainer {
+  position: absolute;
+  right: 0;
+  background-color: cadetblue;
+  width: 25vw;
+  height: 100vh;
+  border: 1px solid blue;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.cardy:first-child {
+  margin-left: 0;
+}
+.cardy {
+  cursor: pointer;
+  margin: 0px 5px;
+  border: 1px dotted gray;
+  padding: 5px;
+}
