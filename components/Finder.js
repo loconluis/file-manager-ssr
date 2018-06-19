@@ -39,7 +39,7 @@ export default class Finder extends Component {
       <div className="finderContainer">
           <div className="finderContainer__workzone">
             <div className="finderContainer__workzone-title">
-              <p>{this.state.path.join(' / ')}</p>
+              <p>{this.state.path.slice(-1)[0]}</p>
             </div>
             <div className="finderContainer__workzone-work">
               <div style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -57,6 +57,9 @@ export default class Finder extends Component {
                   ))
                 }                        
               </div>
+            </div>
+            <div className="finderContainer__workzone-footer">
+              <p>{this.state.path.join(' / ')}</p>
             </div>
           </div>
           {this.state.show && <div className="finderContainer__detailContainer">

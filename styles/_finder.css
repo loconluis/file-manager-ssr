@@ -22,7 +22,7 @@ body {
   border: 1px solid cyan;
 }
 
-.finderContainer__workzone-title p{
+.finderContainer__workzone-title p, .finderContainer__workzone-footer p{
   margin: 0;
   line-height: 2em;
   padding-left: 10px;
@@ -33,6 +33,10 @@ body {
   padding: 20px 35px;
   height: 95vh;
   border: 1px solid gold;
+}
+.finderContainer__workzone-footer {
+  height: 5vh;
+  border: 1px solid black;
 }
 
 .finderContainer__detailContainer {
