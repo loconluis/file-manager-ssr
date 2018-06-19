@@ -42,7 +42,7 @@ export default class Finder extends Component {
               <p>{this.state.path.join(' / ')}</p>
             </div>
             <div className="finderContainer__workzone-work">
-              <div style={{ display: 'flex' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 {
                   this.state._node2Show.map((_node, i) => (
                     <Cardy

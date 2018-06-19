@@ -29,6 +29,7 @@ body {
   color: #0366d6;
 } 
 .finderContainer__workzone-work {
+  flex-wrap: wrap;
   padding: 20px 35px;
   height: 95vh;
   border: 1px solid gold;
@@ -49,8 +50,16 @@ body {
   margin-left: 0;
 }
 .cardy {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 5em;
   cursor: pointer;
-  margin: 0px 5px;
+  margin: 5px 10px 5px 0px;
   border: 1px dotted gray;
   padding: 5px;
+}
+
+.cardy:hover {
+  background-color: #eee;
 }
