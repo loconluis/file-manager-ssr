@@ -26,7 +26,7 @@ body {
 
 .finderContainer__workzone-toolbar__title p, .finderContainer__workzone-footer p{
   margin: 0;
-  line-height: 2em;
+  line-height: 2.5em;
   padding-left: 10px;
   color: #0366d6;
 } 
@@ -60,13 +60,21 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 5em;
+  height: 9em;
+  width: 9em;
   cursor: pointer;
   margin: 5px 10px 5px 0px;
   border: 1px dotted gray;
   padding: 5px;
 }
 
+.cardy__label {
+  width: 8em;
+}
+.cardy__label p{
+  text-align: center;
+  /* word-break: break-all; */
+}
 .cardy:hover {
   background-color: #eee;
 }

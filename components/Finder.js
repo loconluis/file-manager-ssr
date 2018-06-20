@@ -10,7 +10,7 @@ export default class Finder extends Component {
   state = {
     show: false,
     _node2Show: [],
-    path: ['Root'],
+    path: ['admin'],
     clickNode: {}
   }
 
@@ -24,7 +24,7 @@ export default class Finder extends Component {
     // console.log('prevPropos', prevProps)
     console.log('prevState', prevState)
     console.log('this.state', this.state)
-    Router.push(`/${this.state.path.slice(-1)[0]}`)
+    // Router.push(`/${this.state.path.slice(-1)[0]}`)
     // console.log('snapshot', snapshot)
   }
 

@@ -12,16 +12,21 @@ export default class Cardy extends Component {
 
   render() {
     return (
-      <div className="cardy"
-        onDoubleClick={this.handleDoubleClick}
-        // onClick={props.selectLeaf}
-      >
-        {this.props.children}
-        <button
-          onClick={this.self}
+      <div>
+        <div className="cardy"
+          onDoubleClick={this.handleDoubleClick}
+          // onClick={props.selectLeaf}
         >
-          Ver Detalle
-        </button>
+          {/*this.props.children*/}
+          <button
+            onClick={this.self}
+          >
+            Ver Detalle
+          </button>
+        </div>
+        <div className="cardy__label">
+          <p>{this.props.children}</p>
+        </div>
       </div>
     )
   }
