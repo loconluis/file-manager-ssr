@@ -44,10 +44,11 @@ body {
 .finderContainer__detailContainer {
   position: absolute;
   right: 0;
-  background-color: cadetblue;
+  background-color:rgb(247, 247, 247);
   width: 25vw;
   height: 100vh;
   border: 1px solid blue;
+  padding-left: 10px;
   overflow: hidden;
   overflow-y: auto;
 }

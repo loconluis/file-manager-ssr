@@ -3,6 +3,7 @@ import Toolbar from './Toolbar'
 import Container from './Container'
 import Path from './Path'
 import Detail from './Detail'
+import Router from 'next/router'
 import '../styles/_finder.css'
 
 export default class Finder extends Component {
@@ -17,6 +18,14 @@ export default class Finder extends Component {
     // console.log('this.props', this.props)
     this.setState(() => ({ _node2Show: this.props.data }))
     // window.addEventListener('click', () => this.setState({show: false}))
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    // console.log('prevPropos', prevProps)
+    console.log('prevState', prevState)
+    console.log('this.state', this.state)
+    Router.push(`/${this.state.path.slice(-1)[0]}`)
+    // console.log('snapshot', snapshot)
   }
 
   showDetail = () => {
@@ -38,6 +47,7 @@ export default class Finder extends Component {
   }
   
   render() {
+    // console.log('Link', Router)
     return (
       <div className="finderContainer">
           <div className="finderContainer__workzone">
