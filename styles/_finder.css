@@ -57,9 +57,9 @@ body {
   margin-left: 0;
 }
 .cardy {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-between; */
   height: 9em;
   width: 9em;
   cursor: pointer;
@@ -77,4 +77,9 @@ body {
 }
 .cardy:hover {
   background-color: #eee;
+}
+
+.cardy_3_btn {
+  padding: 3px !important;
+  color: 'black'
 }
