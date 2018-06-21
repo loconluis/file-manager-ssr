@@ -3,7 +3,7 @@ import Toolbar from './Toolbar'
 import Container from './Container'
 import Path from './Path'
 import Detail from './Detail'
-import Router from 'next/router'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import '../styles/_finder.css'
 
 export default class Finder extends Component {
@@ -15,6 +15,7 @@ export default class Finder extends Component {
   }
 
   componentDidMount() {
+    // [{ name: 'admin', id: 'root' }]
     // console.log('this.props', this.props)
     this.setState(() => ({ _node2Show: this.props.data }))
     // window.addEventListener('click', () => this.setState({show: false}))

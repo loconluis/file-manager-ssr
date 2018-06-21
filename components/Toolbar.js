@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Button } from 'reactstrap'
 
 export default class Toolbar extends Component {
   render() {
@@ -8,15 +9,21 @@ export default class Toolbar extends Component {
           <p>{this.props.title}</p>
         </div>
         <div className="finderContainer__workzone-toolbar__buttons">
-          <button>
+          <Button
+            color="default"
+          >
             Agregar
-          </button>
-          <button>
+          </Button>
+          <Button
+            color="default"
+          >
             Informacion Actual
-          </button>
-          <button>
+          </Button>
+          <Button
+            color="default"
+          >
             Buy me a coffee
-          </button>
+          </Button>
         </div>
       </div>
     )

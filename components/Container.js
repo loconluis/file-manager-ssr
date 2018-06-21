@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import Cardy from './Cardy'
+import Cardy from './Cardy';
+// import Link from 'next/link'
 
 export default class Container extends Component {
   render() {

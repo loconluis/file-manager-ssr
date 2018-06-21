@@ -33,14 +33,14 @@ export default class Cardy extends Component {
               isOpen={this.state.dropdownOpen}
               toggle={this.toggleDropDown}
             >
-              <DropdownToggle color="link" className="cardy_3_btn">
+              <DropdownToggle color="default" className="cardy_3_btn">
                 <i className="fa fa-ellipsis-v" aria-hidden="true" />
               </DropdownToggle>
               <DropdownMenu>
                 <DropdownItem
                   onClick={this.self}
                 >
-                  Another Ver
+                  Detalle
                 </DropdownItem>
               </DropdownMenu>
             </ButtonDropdown>
