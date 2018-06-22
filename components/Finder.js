@@ -3,12 +3,13 @@ import Toolbar from './Toolbar'
 import Container from './Container'
 import Path from './Path'
 import Detail from './Detail'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { transformDataTree } from '../utils/transformData'
 import '../styles/_finder.css'
 
 export default class Finder extends Component {
   state = {
     show: false,
+    data: [],
     _node2Show: [],
     path: ['admin'],
     clickNode: {}
@@ -16,29 +17,20 @@ export default class Finder extends Component {
 
   componentDidMount() {
     // [{ name: 'admin', id: 'root' }]
-    // console.log('this.props', this.props)
-    this.setState(() => ({ _node2Show: this.props.data }))
+    console.log('this.props', this.props.data)
+    let trasformedData = transformDataTree(this.props.data)
+    console.log('trasformedData', trasformedData)
+    this.setState(() => ({ data: trasformedData, _node2Show: trasformedData }))
     // window.addEventListener('click', () => this.setState({show: false}))
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    // console.log('prevPropos', prevProps)
-    console.log('prevState', prevState)
-    console.log('this.state', this.state)
-    // Router.push(`/${this.state.path.slice(-1)[0]}`)
-    // console.log('snapshot', snapshot)
   }
 
   showDetail = () => {
     this.setState((prevState) => ({ show: !prevState.show }))
   }
 
-  handleDoubleClick = (label) => {
-    // console.log('label', label)
-    let find = this.state._node2Show.filter(el => el.label === label)[0].children
-    // this.setState(() => ({ _node2Show: [] }))
-    // console.log('find', find)
-    let path = [...this.state.path, label]
+  handleDoubleClick = (validators) => {
+    let find = this.state._node2Show.filter(el => el.title === validators.label)[0].childs
+    let path = [...this.state.path, validators]
     this.setState(() => ({ _node2Show: find, path }))
   }
 
@@ -48,11 +40,11 @@ export default class Finder extends Component {
   }
   
   render() {
-    // console.log('Link', Router)
+    console.log('_node2Show', this.state._node2Show)
     return (
       <div className="finderContainer">
           <div className="finderContainer__workzone">
-            <Toolbar title={this.state.path.slice(-1)[0]}/>
+            <Toolbar title={this.state.path.slice(-1)[0].label}/>
             <Container 
               nodes={this.state._node2Show}
               showDetail={this.showDetail}

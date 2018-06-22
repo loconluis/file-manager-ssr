@@ -16,7 +16,7 @@ export default class Container extends Component {
                 node={_node}
                 buttonClick={this.props.handleOnClickButton}
               >
-                {_node.label}
+                {_node.title}
               </Cardy>  
             ))
           }                        

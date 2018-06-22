@@ -6,7 +6,7 @@ export default class Path extends Component {
     
     return (
       <div className="finderContainer__workzone-footer">
-        <p>{this.props.path.join(' / ')}</p>
+        <p>{/*this.props.path.join(' / ')*/}</p>
       </div>
     )
   }
