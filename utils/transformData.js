@@ -26,16 +26,16 @@ export const transformNode = (node) => {
 
 // Find a node an return
 let newArr = [];
-export const getSpecificNode = (treeData, id, parentID) => {
+export const getSpecificNode = (treeData, id) => {
   treeData.map(node => {
     const idMatch = node.id.includes(id)
-    const parentId = node.parentId.includes(parentID)
-    if (textMatch && parentID) {
+    // const parentId = node.parentId.includes(parentID)
+    if (idMatch) {
       console.log('---HICE MATCH---');
-      newArr.push(nodo)
+      newArr.push(node)
     } else {
-      if (nodo.children) {
-        return getSpecificNode(node.childs, text)
+      if (node.childs) {
+        return getSpecificNode(node.childs, id)
       }
     }
   })

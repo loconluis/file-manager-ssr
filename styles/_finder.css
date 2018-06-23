@@ -24,7 +24,7 @@ body {
   border: 1px solid cyan;
 }
 
-.finderContainer__workzone-toolbar__title p, .finderContainer__workzone-footer p{
+.finderContainer__workzone-toolbar__title p, .finderContainer__workzone-footer span{
   margin: 0;
   line-height: 2.5em;
   padding-left: 10px;

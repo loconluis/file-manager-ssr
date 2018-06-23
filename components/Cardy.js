@@ -11,7 +11,7 @@ export default class Cardy extends Component {
     let validator = {
       label: this.props.children,
       parentID: this.props.node.parentId,
-      id: this.props.id
+      id: this.props.node.id
     }
     this.props.onDoubleClick(validator)
   }
@@ -65,6 +65,3 @@ export default class Cardy extends Component {
     )
   }
 }
-
-
-  
