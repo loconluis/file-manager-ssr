@@ -24,9 +24,9 @@ export const transformNode = (node) => {
   }
 }
 
-// Find a node an return
-let newArr = [];
-export const getSpecificNode = (treeData, id) => {
+// Find a node an retur
+export const getSpecificNode = (treeData, id, auxArr = []) => {
+  let newArr = auxArr;
   treeData.map(node => {
     const idMatch = node.id.includes(id)
     // const parentId = node.parentId.includes(parentID)
@@ -35,7 +35,7 @@ export const getSpecificNode = (treeData, id) => {
       newArr.push(node)
     } else {
       if (node.childs) {
-        return getSpecificNode(node.childs, id)
+        return getSpecificNode(node.childs, id, newArr)
       }
     }
   })

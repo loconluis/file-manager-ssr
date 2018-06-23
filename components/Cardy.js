@@ -7,7 +7,6 @@ export default class Cardy extends Component {
   }
 
   handleDoubleClick = () => {
-    console.log('this.props.node', this.props.node)
     let validator = {
       label: this.props.children,
       parentID: this.props.node.parentId,
@@ -17,7 +16,6 @@ export default class Cardy extends Component {
   }
 
   self = () => {
-    console.log('Self is called')
     this.props.buttonClick(this.props.node)
   }
 

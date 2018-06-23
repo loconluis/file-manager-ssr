@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 export default class Path extends Component {
   render() {
-    console.log('this.props on Path', this.props)
+    // console.log('this.props on Path', this.props)
     return (
       <div className="finderContainer__workzone-footer">
         {/*this.props.path.map(_path => {

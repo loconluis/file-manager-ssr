@@ -21,7 +21,6 @@ class Finder extends Component {
   }
 
   componentDidMount() {
-    console.log('router', this.props.router)
     let nodeID = this.props.router.query.node,
     trasformedData = transformDataTree(this.props.data);
     trasformedData = [{ id: 'root', title: 'root', childs: trasformedData }]
@@ -32,37 +31,27 @@ class Finder extends Component {
       return this.setState(() => ({ data: trasformedData, _node2Show: myNode }))
     }
   }
-
-  componentWillReceiveProps(nextProps) {
-    console.log('im receiving props')
-    let nodeID = this.props.router.query.node,
-    myNode = getSpecificNode(this.state.data, nodeID);
-    console.log('node', myNode)
-    this.setState(() => ({ _node2Show: myNode }))
-  }
   
   showDetail = () => {
     this.setState((prevState) => ({ show: !prevState.show }))
   }
 
   handleDoubleClick = (validators) => {
-    // let find = this.state._node2Show.filter(el => el.title === validators.label)[0].childs
-    // let path = [...this.state.path, validators]
-    // Router.push({
-    //   pathname: '/admin',
-    //   query: { node: validators.id }
-    // })
-    // this.setState(() => ({ _node2Show: find, path }))
-    console.log('was clicked it')
+    // console.log('validators', validators)
+    const { id } = validators
+    this.props.router.push('/admin?node=' + id)
+    let myNode = getSpecificNode(this.state.data, id);
+    console.log('myNoda', myNode)
+    this.setState(() => ({ _node2Show: myNode }))
   }
 
   handleOnClickButton = (node) => {
-    console.log('node', node)
+    // console.log('node', node)
     this.setState(() => ({ clickNode: node, show: true }))
   }
   
   render() {
-    console.log('_node2Show', this.state._node2Show)
+    // console.log('_node2Show', this.state._node2Show)
     return (
       <div className="finderContainer">
           <div className="finderContainer__workzone">
