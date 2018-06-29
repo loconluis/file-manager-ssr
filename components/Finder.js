@@ -25,6 +25,7 @@ class Finder extends Component {
     trasformedData = transformDataTree(this.props.data);
     trasformedData = [{ id: 'root', title: 'root', childs: trasformedData }]
     if (nodeID === 'root') {
+      this.props.router.push('?node=root')
       return this.setState(() => ({ data: trasformedData, _node2Show: trasformedData }))
     } else {
       let myNode = getSpecificNode(trasformedData, nodeID);
