@@ -8,16 +8,16 @@ export default class Empresa extends Generic{
         super(id,type);
     }
 
-    async etData(empresa){
-        this.title = empresa.nombre;
-        this.props = _.omit(empresa, ['_id']);
-        this.children = await this.getChildren();
+    async setData(empresa){
+        this.data.title = empresa.nombre;
+        this.data.props = _.omit(empresa, ['_id']);
+        this.data.children = await this.getChildren();
     }
 
     async getData(){
         try{
-            let data = (await axios.get('http://192.168.0.119:3004/empresa/'+this.id,{headers:{wp:"demo"}})).data;
-            this.setData(data);
+            let data = (await axios.get('http://192.168.0.119:3004/empresa/'+this.data.id,{headers:{wp:"demo"}})).data;
+            await this.setData(data);
         }catch(e){
             console.log(e);
         }
@@ -25,8 +25,8 @@ export default class Empresa extends Generic{
 
     async getChildren(){
         try{
-            let areas = (await axios.get('http://192.168.0.119:3004/area?empresa='+this.id,{headers:{wp:"demo"}})).data;
-            areasPadre =  areas.map(area=>!area.areapadre);
+            let areas = (await axios.get('http://192.168.0.119:3004/area?empresa='+this.data.id,{headers:{wp:"demo"}})).data;
+            let areasPadre = areas.filter(area=>!area.areapadre && area)
 
             return areasPadre.map((area)=>{
                 let classArea = new Area(area._id,'area');
