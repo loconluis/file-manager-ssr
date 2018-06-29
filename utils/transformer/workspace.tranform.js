@@ -6,18 +6,19 @@ import Empresa from './empresa.transform'
 export default class Workspace extends Generic{
     constructor(id,type){
         super(id,type);
+        this.getData();
     }
 
     async setData(workspace){
-        this.title = workspace.domain;
-        this.props = _.omit(workspace, ['id'])
-        this.children = await this.getChildren();
+        this.data.title = workspace.domain;
+        this.data.props = _.omit(workspace, ['id'])
+        this.data.children = await this.getChildren();
     }
 
     async getData(){
         try{
-            let data = (await axios.get('http://192.168.0.119:1339/workspace',{headers:{wp:"demo"}})).data;
-            this.setData(data);
+            let data = (await axios.get('http://apipersona.estratek.com/workspace/workspace/'+this.data.id,{headers:{wp:"demo"}})).data;
+            await this.setData(data);
         }catch(e){
             console.log(e);
         }
