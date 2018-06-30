@@ -3,11 +3,6 @@ import Toolbar from './Toolbar'
 import Container from './Container'
 import Path from './Path'
 import Detail from './Detail'
-import { transformDataTree, getSpecificNode } from '../utils/transformData'
-import { withRouter } from 'next/router'
-import Router from 'next/router'
-import '../styles/_finder.css'
-import { Transformer } from '../utils/transformer'
 
 class Finder extends Component {
   state = {
@@ -22,17 +17,7 @@ class Finder extends Component {
   }
 
   componentDidMount() {
-    let nodeID = this.props.router.query.node,
-    trasformedData = transformDataTree(this.props.data);
-    trasformedData = [{ id: 'root', title: 'root', childs: trasformedData }]
-
-    if (nodeID === 'root') {
-      console.log('transform', Transformer('5afca6755bd37f19270f33f4','workspace'));
-      return this.setState(() => ({ data: trasformedData, _node2Show: trasformedData }))
-    } else {
-      let myNode = getSpecificNode(trasformedData, nodeID);
-      return this.setState(() => ({ data: trasformedData, _node2Show: myNode }))
-    }
+    console.log('this.props.nodeInstance', this.props)
   }
   
   showDetail = () => {
@@ -77,4 +62,4 @@ class Finder extends Component {
   }
 }
 
-export default withRouter(Finder)
+export default Finder

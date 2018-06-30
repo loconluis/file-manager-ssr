@@ -1,10 +1,8 @@
-import Finder from '../../components/Finder'
+import AreaScene from '../../components/scenes/AdminScene' 
 import data from '../../utils/seed'
 
 export default () => (
   <div>
-    <Finder
-      data={data}
-    />
+    <AreaScene />
   </div>
 )

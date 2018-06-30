@@ -16,7 +16,7 @@ export default class Area extends Generic{
 
     async getData(){
         try{
-            let data = (await axios.get('http://192.168.0.119:3004/area/'+this.data.id,{headers:{wp:"demo"}})).data;
+            let data = (await axios.get('http://192.168.20.112:3001/area/'+this.data.id,{headers:{wp:"demo"}})).data;
             await this.setData(data);
         }catch(e){
             console.log(e);
@@ -25,7 +25,7 @@ export default class Area extends Generic{
 
     async getChildren(){
         try{
-            let hijos = (await axios.get('http://192.168.0.119:3004/area/adminchilds?area='+this.data.id,{headers:{wp:"demo"}})).data;
+            let hijos = (await axios.get('http://192.168.20.112:3001/area/adminchilds?area='+this.data.id,{headers:{wp:"demo"}})).data;
             /**
              * {
              *  "area":[{...},{...}],
