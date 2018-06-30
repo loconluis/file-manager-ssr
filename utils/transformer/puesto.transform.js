@@ -2,6 +2,7 @@ import Generic from './generic.transform'
 import axios from 'axios'
 import _ from 'lodash'
 import Persona from './persona.transform'
+import Area from './area.transform'
 
 export default class Puesto extends Generic{
     constructor(id,type){
@@ -12,7 +13,8 @@ export default class Puesto extends Generic{
         if(!puesto){
             let data = (await axios.get('http://192.168.0.119:3004/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
             await this.setData(data);
-            this.data.children = await this.setChildren();
+            await this.setChildren();
+            await this.setParent();
         }else{
             this.data.title = puesto.puesto.nombre;
             this.data.props = _.omit(puesto, ['_id'])
@@ -22,9 +24,7 @@ export default class Puesto extends Generic{
     async setChildren(){
         try{
             let hijos = (await axios.get('http://192.168.0.119:3004/silla?plaza='+this.data.id,{headers:{wp:"demo"}})).data;
-            console.log("plaza ",this.data.title);
-            console.log("sillas",hijos)
-            return hijos.map((hijo)=>{
+            this.data.children = hijos.map((hijo)=>{
                 let classPersona = new Persona(hijo._id,'persona');
                 classPersona.setData(hijo);
                 return classPersona;
@@ -34,5 +34,10 @@ export default class Puesto extends Generic{
         }
 
     }   
+
+    async setParent(){
+        this.data.parent = new Area(this.data.props.area._id,'area');
+        this.data.parent.setData();
+    }
 
 }
