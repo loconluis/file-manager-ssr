@@ -6,7 +6,7 @@ export default class Toolbar extends Component {
     return (
       <div className="finderContainer__workzone-toolbar">
         <div className="finderContainer__workzone-toolbar__title">
-          <p>{this.props.title}</p>
+          <p>{this.props.title && this.props.title.toUpperCase() || ''}</p>
         </div>
         <div className="finderContainer__workzone-toolbar__buttons">
           <Button

@@ -8,17 +8,13 @@ class Finder extends Component {
   state = {
     show: false,
     data: [],
-    _node2Show: [],
+    _node2Show: {children: []},
     path: [{
         label: 'admin',
         id: 'root'
       }],
     clickNode: {}
   }
-
-  // componentDidMount() {
-  //   console.log('this.props.nodeInstance', this.props.nodeInstance)
-  // }
   
   componentWillReceiveProps(nextProps) {
     console.log('this.props.nodeInstance', nextProps.nodeInstance.data)
@@ -29,14 +25,14 @@ class Finder extends Component {
     this.setState((prevState) => ({ show: !prevState.show }))
   }
 
-  handleDoubleClick = (validators) => {
-    // console.log('validators', validators)
-    const { id } = validators
-    this.props.router.push('/admin?node=' + id)
-    let myNode = getSpecificNode(this.state.data, id);
-    console.log('myNoda', myNode)
-    this.setState(() => ({ _node2Show: myNode }))
-  }
+  // handleDoubleClick = (validators) => {
+  //   // console.log('validators', validators)
+  //   const { id } = validators
+  //   this.props.router.push('/admin?node=' + id)
+  //   let myNode = getSpecificNode(this.state.data, id);
+  //   console.log('myNoda', myNode)
+  //   this.setState(() => ({ _node2Show: myNode }))
+  // }
 
   handleOnClickButton = (node) => {
     // console.log('node', node)
@@ -44,15 +40,15 @@ class Finder extends Component {
   }
   
   render() {
-    // console.log('_node2Show', this.state._node2Show)
+    console.log('_node2Show', this.state._node2Show.title)
     return (
       <div className="finderContainer">
           <div className="finderContainer__workzone">
-            <Toolbar title={'Root'}/>
+            <Toolbar title={this.state._node2Show.title}/>
             <Container 
               nodes={this.state._node2Show}
               showDetail={this.showDetail}
-              handleDoubleClick={this.handleDoubleClick}
+              handleDoubleClick={this.props.handleDoubleClick}
               handleOnClickButton={this.handleOnClickButton}
             />
             <Path path={this.state.path}/>
