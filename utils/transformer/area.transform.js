@@ -57,4 +57,9 @@ export default class Area extends Generic{
 
     }   
 
+    async save(newdata){
+        let save = (await axios.post('http://192.168.0.119:3004/area',newdata,{headers:{wp:"demo"}})).data;
+            
+    }
+
 }

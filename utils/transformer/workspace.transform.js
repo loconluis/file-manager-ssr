@@ -38,4 +38,12 @@ export default class Workspace extends Generic{
 
     }   
 
+    async addChildren(child){
+        await child.save();
+        this.children.push(child);
+    }
+
+    async removeChildren(child){
+        
+    }
 }

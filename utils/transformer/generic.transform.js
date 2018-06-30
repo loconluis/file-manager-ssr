@@ -22,11 +22,7 @@ export default class generic {
     }
 
     getProps(){
-
-    }
-
-    get(){
-
+        return this.data.props;
     }
 
     save(){
