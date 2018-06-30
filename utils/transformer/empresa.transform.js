@@ -1,7 +1,7 @@
-import Generic from './generic.tranform'
+import Generic from './generic.transform'
 import axios from 'axios'
 import _ from 'lodash'
-import Area from './area.tranform'
+import Area from './area.transform'
 
 export default class Empresa extends Generic{
     constructor(id,type){

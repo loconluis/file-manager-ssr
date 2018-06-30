@@ -1,4 +1,4 @@
-import Generic from './generic.tranform'
+import Generic from './generic.transform'
 import axios from 'axios'
 import _ from 'lodash'
 import Empresa from './empresa.transform'

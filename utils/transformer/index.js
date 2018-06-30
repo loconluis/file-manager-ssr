@@ -1,5 +1,5 @@
 
-import Workspace from './workspace.tranform'
+import Workspace from './workspace.transform'
 
 export function Transformer(nodeId, nodeType){
     switch(nodeType){
