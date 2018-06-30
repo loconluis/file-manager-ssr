@@ -9,21 +9,17 @@ export default class Puesto extends Generic{
     }
     
     async setData(puesto){
-        this.data.title = puesto.puesto.nombre;
-        this.data.props = _.omit(puesto, ['_id'])
-        this.data.children = await this.getChildren();
-    }
-
-    async getData(){
-        try{
+        if(!puesto){
             let data = (await axios.get('http://192.168.0.119:3004/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
             await this.setData(data);
-        }catch(e){
-            console.log(e);
+            this.data.children = await this.setChildren();
+        }else{
+            this.data.title = puesto.puesto.nombre;
+            this.data.props = _.omit(puesto, ['_id'])
         }
     }
 
-    async getChildren(){
+    async setChildren(){
         try{
             let hijos = (await axios.get('http://192.168.0.119:3004/silla?plaza='+this.data.id,{headers:{wp:"demo"}})).data;
             console.log("plaza ",this.data.title);

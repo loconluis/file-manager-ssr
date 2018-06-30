@@ -9,21 +9,17 @@ export default class Empresa extends Generic{
     }
 
     async setData(empresa){
-        this.data.title = empresa.nombre;
-        this.data.props = _.omit(empresa, ['_id']);
-        this.data.children = await this.getChildren();
-    }
-
-    async getData(){
-        try{
+        if(!empresa){
             let data = (await axios.get('http://192.168.0.119:3004/empresa/'+this.data.id,{headers:{wp:"demo"}})).data;
             await this.setData(data);
-        }catch(e){
-            console.log(e);
+            this.data.children = await this.setChildren();
+        }else{
+            this.data.title = empresa.nombre;
+            this.data.props = _.omit(empresa, ['_id']);
         }
     }
 
-    async getChildren(){
+    async setChildren(){
         try{
             let areas = (await axios.get('http://192.168.0.119:3004/area?empresa='+this.data.id,{headers:{wp:"demo"}})).data;
             let areasPadre = areas.filter(area=>!area.areapadre && area)

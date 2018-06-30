@@ -12,18 +12,22 @@ class AreaScene extends React.Component {
   state = {
     nodeInstance: []
   }
-  componentDidMount() {
+  async componentDidMount() {
     let nodeID = this.props.router.query.node,
     nodeType = this.props.router.query.type,
     wpID = '5b0749205bd37f2dbd0f33f5'
 
     if (nodeID === wpID) {
       let nodeInstance = Transformer('5b0749205bd37f2dbd0f33f5','workspace');
-      console.log('transform on if', Transformer('5b0749205bd37f2dbd0f33f5','workspace'));
+      console.log("nodeInstance",nodeInstance);
+      await nodeInstance.setData();
+      console.log("nodeInstance after setdata",nodeInstance);
+      console.log('transform on if', nodeInstance);
       return this.setState(() => ({ nodeInstance }))
     } else {
       let nodeInstance = Transformer(nodeID, nodeType);
-      console.log('transform on else', Transformer(nodeID,nodeType));
+      await nodeInstance.setData();
+      console.log('transform on else', nodeInstance);
       return this.setState(() => ({ nodeInstance }))
     }
   }

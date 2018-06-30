@@ -16,10 +16,15 @@ class Finder extends Component {
     clickNode: {}
   }
 
-  componentDidMount() {
-    console.log('this.props.nodeInstance', this.props)
-  }
+  // componentDidMount() {
+  //   console.log('this.props.nodeInstance', this.props.nodeInstance)
+  // }
   
+  componentWillReceiveProps(nextProps) {
+    console.log('this.props.nodeInstance', nextProps.nodeInstance.data)
+    this.setState(() => ({ _node2Show: nextProps.nodeInstance.data }))
+  }
+
   showDetail = () => {
     this.setState((prevState) => ({ show: !prevState.show }))
   }
@@ -45,7 +50,7 @@ class Finder extends Component {
           <div className="finderContainer__workzone">
             <Toolbar title={'Root'}/>
             <Container 
-              nodes={this.state._node2Show[0]}
+              nodes={this.state._node2Show}
               showDetail={this.showDetail}
               handleDoubleClick={this.handleDoubleClick}
               handleOnClickButton={this.handleOnClickButton}

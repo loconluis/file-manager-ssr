@@ -8,19 +8,16 @@ export default class Persona extends Generic{
     }
     
     async setData(persona){
-        this.data.title = persona.persona.nombrepreferido;
-        this.data.props = _.omit(persona, ['_id'])
-    }
-
-    async getData(){
-        try{
+        if(!persona){
             let data = (await axios.get('http://192.168.0.119:3004/silla/'+this.data.id,{headers:{wp:"demo"}})).data;
             await this.setData(data);
-        }catch(e){
-            console.log(e);
+            this.data.children = await this.setChildren();
+        }else{
+            this.data.title = persona.persona.nombrepreferido;
+            this.data.props = _.omit(persona, ['_id'])
         }
     }
 
-    async getChildren(){}   
+    async setChildren(){}   
 
 }
