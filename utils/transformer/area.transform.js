@@ -9,23 +9,19 @@ export default class Area extends Generic{
     }
     
     async setData(area){
-        this.data.title = area.nombre;
-        this.data.props = _.omit(area, ['_id'])
-        this.data.children = await this.getChildren();
-    }
-
-    async getData(){
-        try{
+        if(!area){
             let data = (await axios.get('http://192.168.0.119:3004/area/'+this.data.id,{headers:{wp:"demo"}})).data;
             await this.setData(data);
-        }catch(e){
-            console.log(e);
+            this.data.children = await this.setChildren();
+        }else{
+            this.data.title = area.nombre;
+            this.data.props = _.omit(area, ['_id'])
         }
     }
 
-    async getChildren(){
+    async setChildren(){
         try{
-            let hijos = (await axios.get('http://localhost:3001/area/adminchilds?area='+this.data.id,{headers:{wp:"demo"}})).data;
+            let hijos = (await axios.get('http://192.168.20.112:3001/area/adminchilds?area='+this.data.id,{headers:{wp:"demo"}})).data;
             /**
              * {
              *  "area":[{...},{...}],

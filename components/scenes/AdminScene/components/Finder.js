@@ -3,11 +3,6 @@ import Toolbar from './Toolbar'
 import Container from './Container'
 import Path from './Path'
 import Detail from './Detail'
-import { transformDataTree, getSpecificNode } from '../utils/transformData'
-import { withRouter } from 'next/router'
-import Router from 'next/router'
-import '../styles/_finder.css'
-import { Transformer } from '../utils/transformer'
 
 class Finder extends Component {
   state = {
@@ -21,20 +16,15 @@ class Finder extends Component {
     clickNode: {}
   }
 
-  componentDidMount() {
-    let nodeID = this.props.router.query.node,
-    trasformedData = transformDataTree(this.props.data);
-    trasformedData = [{ id: 'root', title: 'root', childs: trasformedData }]
-
-    if (nodeID === 'root') {
-      console.log('transform', Transformer('5afca6755bd37f19270f33f4','workspace'));
-      return this.setState(() => ({ data: trasformedData, _node2Show: trasformedData }))
-    } else {
-      let myNode = getSpecificNode(trasformedData, nodeID);
-      return this.setState(() => ({ data: trasformedData, _node2Show: myNode }))
-    }
-  }
+  // componentDidMount() {
+  //   console.log('this.props.nodeInstance', this.props.nodeInstance)
+  // }
   
+  componentWillReceiveProps(nextProps) {
+    console.log('this.props.nodeInstance', nextProps.nodeInstance.data)
+    this.setState(() => ({ _node2Show: nextProps.nodeInstance.data }))
+  }
+
   showDetail = () => {
     this.setState((prevState) => ({ show: !prevState.show }))
   }
@@ -60,7 +50,7 @@ class Finder extends Component {
           <div className="finderContainer__workzone">
             <Toolbar title={'Root'}/>
             <Container 
-              nodes={this.state._node2Show[0]}
+              nodes={this.state._node2Show}
               showDetail={this.showDetail}
               handleDoubleClick={this.handleDoubleClick}
               handleOnClickButton={this.handleOnClickButton}
@@ -77,4 +67,4 @@ class Finder extends Component {
   }
 }
 
-export default withRouter(Finder)
+export default Finder
