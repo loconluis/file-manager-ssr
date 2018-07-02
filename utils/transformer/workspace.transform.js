@@ -38,12 +38,12 @@ export default class Workspace extends Generic{
         this.data.parent = null;
     }
 
-    async createChildren(child){
-        await child.save();
-        this.children.push(child);
-    }
-
-    async removeChildren(child){
-
+    async setCreateOptions(){
+        this.data.createOptions = [
+            {
+                'label':'Nueva Empresa',
+                'type':'empresa'
+            }
+        ]
     }
 }
