@@ -56,7 +56,7 @@ export default class Empresa extends Generic{
         this.data.createOptions = [
             {
                 'label':'Nueva Área',
-                'value':new Area(null)
+                'type':'area'
             }
         ]
     }

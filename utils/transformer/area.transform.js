@@ -70,28 +70,42 @@ export default class Area extends Generic{
         this.data.createOptions = [
             {
                 'label':'Nueva Área',
-                'value':new Area(null)
+                'type':'area'
             },
             {
                 'label':'Nuevo Puesto',
-                'value':new Puesto(null)
+                'type':'puesto'
             }
         ]
     }
 
-    async create(data){
+    mapDataToProps(){
+        this.data.props.nombre = this.data.title;
+        this.data.props._id = this.data.id;
+    }
+
+    mapPropsToData(){
+        this.data.title = this.data.props.nombre;
+        this.data.id = this.data.props._id;
+    }
+
+    async create(){
         try{
-            let empresa = (await axios.post('http://192.168.0.119:3004/area',data,{headers:{wp:"demo"}})).data;
-            return empresa;
+            this.mapDataToProps();
+            this.data.props = (await axios.post('http://192.168.0.119:3004/empresa',this.data.props,{headers:{wp:"demo"}})).data;
+            this.mapPropsToData();
+            return this.data.props;
         }catch(e){
             console.log(e);
         }
     }
 
-    async save(data){
+    async save(){
         try{
-            let empresa = (await axios.put('http://192.168.0.119:3004/area/'+this.data.id,data,{headers:{wp:"demo"}})).data;
-            return empresa;
+            this.mapDataToProps();
+            this.data.props = (await axios.put('http://192.168.0.119:3004/empresa/'+this.data.id,this.data.props,{headers:{wp:"demo"}})).data;
+            this.mapPropsToData();
+            return this.data.props;
         }catch(e){
             console.log(e);
         }
@@ -99,7 +113,7 @@ export default class Area extends Generic{
 
     async delete(){
         try{
-            let empresa = (await axios.delete('http://192.168.0.119:3004/area/'+this.data.id,{headers:{wp:"demo"}})).data;
+            let empresa = (await axios.delete('http://192.168.0.119:3004/empresa/'+this.data.id,{headers:{wp:"demo"}})).data;
             return empresa;
         }catch(e){
             console.log(e);

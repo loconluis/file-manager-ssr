@@ -45,7 +45,7 @@ export default class Puesto extends Generic{
         this.data.createOptions = [
             {
                 'label':'Asignar a persona',
-                'value':new Persona(null)
+                'type':'persona'
             }
         ]
     }
