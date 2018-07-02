@@ -5,8 +5,8 @@ import Puesto from './puesto.transform'
 import Empresa from './empresa.transform'
 
 export default class Area extends Generic{
-    constructor(id,type){
-        super(id,type);
+    constructor(id){
+        super(id,'area');
     }
     
     async setData(area){
@@ -15,6 +15,7 @@ export default class Area extends Generic{
             await this.setData(data);
             await this.setChildren();
             await this.setParent();
+            await this.setCreateOptions();
         }else{
             this.data.title = area.nombre;
             this.data.props = _.omit(area, ['_id'])
@@ -23,7 +24,7 @@ export default class Area extends Generic{
 
     async setChildren(){
         try{
-            let hijos = (await axios.get('http://192.168.20.112:3001/area/adminchilds?area='+this.data.id,{headers:{wp:"demo"}})).data;
+            let hijos = (await axios.get('http://192.168.0.119:3004/area/finderchilds?area='+this.data.id,{headers:{wp:"demo"}})).data;
             /**
              * {
              *  "area":[{...},{...}],
@@ -37,10 +38,10 @@ export default class Area extends Generic{
                     let tempclass = null;
                     switch(type){
                         case 'area':
-                            tempclass = new Area(hijo._id,'area');
+                            tempclass = new Area(hijo._id);
                             break;
                         case 'puesto':
-                            tempclass = new Puesto(hijo._id,'puesto');
+                            tempclass = new Puesto(hijo._id);
                             break;
                     }
                     tempclass.setData(hijo);
@@ -57,16 +58,50 @@ export default class Area extends Generic{
 
     async setParent(){
         if(this.data.props.areapadre){
-            this.data.parent = new Area(this.data.props.areapadre._id,'area');
+            this.data.parent = new Area(this.data.props.areapadre._id);
         }else{
-            this.data.parent = new Empresa(this.data.props.empresa._id,'empresa');
+            this.data.parent = new Empresa(this.data.props.empresa._id);
         }
         await this.data.parent.setData();
     }
 
-    async save(newdata){
-        let save = (await axios.post('http://192.168.0.119:3004/area',newdata,{headers:{wp:"demo"}})).data;
-            
+    async setCreateOptions(){
+        this.data.createOptions = [
+            {
+                'label':'Nueva Área',
+                'value':new Area(null)
+            },
+            {
+                'label':'Nuevo Puesto',
+                'value':new Puesto(null)
+            }
+        ]
     }
 
+    async create(data){
+        try{
+            let empresa = (await axios.post('http://192.168.0.119:3004/area',data,{headers:{wp:"demo"}})).data;
+            return empresa;
+        }catch(e){
+            console.log(e);
+        }
+    }
+
+    async save(data){
+        try{
+            let empresa = (await axios.put('http://192.168.0.119:3004/area/'+this.data.id,data,{headers:{wp:"demo"}})).data;
+            return empresa;
+        }catch(e){
+            console.log(e);
+        }
+    }
+
+    async delete(){
+        try{
+            let empresa = (await axios.delete('http://192.168.0.119:3004/area/'+this.data.id,{headers:{wp:"demo"}})).data;
+            return empresa;
+        }catch(e){
+            console.log(e);
+        }
+    }
 }

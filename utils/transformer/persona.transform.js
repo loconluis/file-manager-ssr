@@ -4,8 +4,8 @@ import _ from 'lodash'
 import Puesto from './puesto.transform'
 
 export default class Persona extends Generic{
-    constructor(id,type){
-        super(id,type);
+    constructor(id){
+        super(id,'persona');
     }
     
     async setData(persona){
@@ -25,7 +25,7 @@ export default class Persona extends Generic{
     }   
     
     async setParent(){
-        this.data.parent = new Area(this.data.props.plaza._id,'puesto');
+        this.data.parent = new Area(this.data.props.plaza._id);
         this.data.parent.setData();
     }
 

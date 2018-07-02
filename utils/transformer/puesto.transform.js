@@ -5,8 +5,8 @@ import Persona from './persona.transform'
 import Area from './area.transform'
 
 export default class Puesto extends Generic{
-    constructor(id,type){
-        super(id,type);
+    constructor(id){
+        super(id,'puesto');
     }
     
     async setData(puesto){
@@ -25,7 +25,7 @@ export default class Puesto extends Generic{
         try{
             let hijos = (await axios.get('http://192.168.0.119:3004/silla?plaza='+this.data.id,{headers:{wp:"demo"}})).data;
             this.data.children = hijos.map((hijo)=>{
-                let classPersona = new Persona(hijo._id,'persona');
+                let classPersona = new Persona(hijo._id);
                 classPersona.setData(hijo);
                 return classPersona;
             });
@@ -36,8 +36,17 @@ export default class Puesto extends Generic{
     }   
 
     async setParent(){
-        this.data.parent = new Area(this.data.props.area._id,'area');
+        this.data.parent = new Area(this.data.props.area._id);
         this.data.parent.setData();
+    }
+
+    async setCreateOptions(){
+        this.data.createOptions = [
+            {
+                'label':'Asignar a persona',
+                'value':new Persona(null)
+            }
+        ]
     }
 
 }
