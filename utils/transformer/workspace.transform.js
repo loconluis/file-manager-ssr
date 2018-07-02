@@ -4,8 +4,8 @@ import _ from 'lodash'
 import Empresa from './empresa.transform'
 
 export default class Workspace extends Generic{
-    constructor(id,type){
-        super(id,type);
+    constructor(id){
+        super(id,'worskpace');
     }
 
     async setData(workspace){
@@ -24,7 +24,7 @@ export default class Workspace extends Generic{
         try{
             let empresas = (await axios.get('http://192.168.0.119:3004/empresa',{headers:{wp:"demo"}})).data;
             this.data.children = empresas.map((empresa)=>{
-                let classEmpresa = new Empresa(empresa._id,'empresa');
+                let classEmpresa = new Empresa(empresa._id);
                 classEmpresa.setData(empresa);
                 return classEmpresa;
             });

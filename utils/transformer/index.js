@@ -8,19 +8,19 @@ import Persona from './persona.transform'
 export function Transformer(nodeId, nodeType){
     switch(nodeType){
         case 'workspace':
-            return new Workspace(nodeId, nodeType);
+            return new Workspace(nodeId);
             break;
         case 'empresa':
-            return new Empresa(nodeId, nodeType);
+            return new Empresa(nodeId);
             break;
         case 'area':
-            return new Area(nodeId, nodeType);
+            return new Area(nodeId);
             break;
         case 'puesto':
-            return new Puesto(nodeId, nodeType);
+            return new Puesto(nodeId);
             break;
         case 'persona':
-            return new Persona(nodeId, nodeType);
+            return new Persona(nodeId);
             break;
     }
 }
