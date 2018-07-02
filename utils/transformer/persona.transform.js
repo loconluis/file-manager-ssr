@@ -6,7 +6,7 @@ import Puesto from './puesto.transform'
 export default class Persona extends Generic{
     constructor(id){
         super(id,'persona');
-        this.icon = 'https://medizzy.com/_nuxt/img/user-placeholder.d2a3ff8.png'
+        this.data.icon = 'https://medizzy.com/_nuxt/img/user-placeholder.d2a3ff8.png'
     }
     
     async setData(persona){

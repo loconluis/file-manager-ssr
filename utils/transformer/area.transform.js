@@ -7,7 +7,7 @@ import Empresa from './empresa.transform'
 export default class Area extends Generic{
     constructor(id){
         super(id,'area');
-        this.icon = 'fa fa-building'
+        this.data.icon = 'fa fa-building'
     }
     
     async setData(area){

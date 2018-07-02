@@ -47,16 +47,10 @@ export default class Cardy extends Component {
                 </DropdownItem>
               </DropdownMenu>
             </ButtonDropdown>
-            {/*<button
-              className="btn btn-default cardy_3_btn"
-              onClick={this.self}
-            >
-              <i className="fa fa-ellipsis-v" aria-hidden="true" />
-            </button>*/}
           </div>
           <div className="text-center cardy__icon">
             <p>
-              <i className='fa fa-industry' />
+              {<i className={this.props.node.data.icon}/>}
             </p>
           </div>
         </div>

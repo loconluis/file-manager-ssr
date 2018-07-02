@@ -7,7 +7,7 @@ import Area from './area.transform'
 export default class Puesto extends Generic{
     constructor(id){
         super(id,'puesto');
-        this.icon = 'fa fa-briefcase'
+        this.data.icon = 'fa fa-briefcase'
     }
     
     async setData(puesto){
