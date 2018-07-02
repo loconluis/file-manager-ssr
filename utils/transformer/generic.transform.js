@@ -3,6 +3,7 @@ export default class generic {
         this.data = {
             id:id,
             type:type,
+            icon:'',
             title:'',
             props:{},
             children:[],
