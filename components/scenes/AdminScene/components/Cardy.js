@@ -29,9 +29,7 @@ export default class Cardy extends Component {
       <div>
         <div className="cardy"
           onDoubleClick={this.handleDoubleClick}
-          // onClick={props.selectLeaf}
         >
-          {/*this.props.children*/}
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <ButtonDropdown
               direction="left"
@@ -55,6 +53,11 @@ export default class Cardy extends Component {
             >
               <i className="fa fa-ellipsis-v" aria-hidden="true" />
             </button>*/}
+          </div>
+          <div className="text-center cardy__icon">
+            <p>
+              <i className='fa fa-industry' />
+            </p>
           </div>
         </div>
         <div className="cardy__label">

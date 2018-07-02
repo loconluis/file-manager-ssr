@@ -36,6 +36,7 @@ class AreaScene extends React.Component {
     let nodeID = this.props.router.query.node,
     nodeType = this.props.router.query.type,
     wpID = '5b0749205bd37f2dbd0f33f5'
+    console.log('me llame on ReceiveProps')
 
     if (nodeID === wpID) {
       let nodeInstance = Transformer('5b0749205bd37f2dbd0f33f5','workspace');
@@ -61,11 +62,7 @@ class AreaScene extends React.Component {
   handleDoubleClick = async (validators) => {
     console.log('validators', validators)
     const { id, type } = validators
-    this.props.router.push('/admin?node=' + id + '&type=' + type) 
-    let nodeInstance = Transformer(id, type);
-    await nodeInstance.setData();
-    // console.log('transform on else', nodeInstance);
-    return this.setState(() => ({ nodeInstance }))
+    this.props.router.push('/admin?node=' + id + '&type=' + type)
   }
   // handle double click
   handleOnClickButton = (node) => {

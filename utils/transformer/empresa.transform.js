@@ -8,6 +8,7 @@ import Workspace from './workspace.transform';
 export default class Empresa extends Generic{
     constructor(id){
         super(id,'empresa');
+        this.icon = 'fa fa-industry'
     }
 
     /**

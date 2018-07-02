@@ -31,6 +31,7 @@ body {
   color: #0366d6;
 } 
 .finderContainer__workzone-work {
+  overflow: auto;
   flex-wrap: wrap;
   padding: 20px 35px;
   height: 95vh;
@@ -75,6 +76,10 @@ body {
   text-align: center;
   /* word-break: break-all; */
 }
+.cardy__icon p {
+  font-size: 45px;
+}
+
 .cardy:hover {
   background-color: #eee;
 }
