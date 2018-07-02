@@ -5,7 +5,8 @@ export default class generic {
             type:type,
             title:'',
             props:{},
-            children:[]
+            children:[],
+            createOptions:[]
         }
     }
 
@@ -13,27 +14,23 @@ export default class generic {
         this.data = data;
     }
 
-    getData(){
+    setChildren(){
 
     }
 
-    getChildren(){
+    setParent(){
 
     }
 
     getProps(){
-
+        return this.data.props;
     }
 
-    get(){
+    create(){
 
     }
 
     save(){
-
-    }
-
-    update(){
 
     }
 
