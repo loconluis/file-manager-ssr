@@ -12,6 +12,7 @@ export default class Cardy extends Component {
       id: this.props.node.data.id,
       type: this.props.node.data.type,
     }
+    console.log('validators', validator)
     this.props.onDoubleClick(validator)
   }
 
@@ -27,7 +28,7 @@ export default class Cardy extends Component {
     return (
       <div>
         <div className="cardy"
-          onDoubleClick={this.props.handleDoubleClick && this.handleDoubleClick}
+          onDoubleClick={this.handleDoubleClick}
           // onClick={props.selectLeaf}
         >
           {/*this.props.children*/}

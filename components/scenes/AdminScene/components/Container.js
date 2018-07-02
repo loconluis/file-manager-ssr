@@ -5,6 +5,7 @@ export default class Container extends React.Component {
 
   getCardByType = (_node, props, i)  => {
     console.log('nodetype', _node.data.type)
+    console.log('props', props)
     switch(_node.data.type) {
       case 'workspace':
         return (
@@ -78,6 +79,7 @@ export default class Container extends React.Component {
     }
   }
   render () {
+    console.log('this.props', this.props)
     return (
       <div className="finderContainer__workzone-work">
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>

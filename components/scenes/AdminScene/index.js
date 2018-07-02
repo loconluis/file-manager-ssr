@@ -59,7 +59,7 @@ class AreaScene extends React.Component {
   }
   // handleDoubleClick on node
   handleDoubleClick = async (validators) => {
-    // console.log('validators', validators)
+    console.log('validators', validators)
     const { id, type } = validators
     this.props.router.push('/admin?node=' + id + '&type=' + type) 
     let nodeInstance = Transformer(id, type);
