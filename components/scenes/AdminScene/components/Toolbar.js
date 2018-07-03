@@ -16,7 +16,7 @@ export default class Toolbar extends Component {
   }
 
   handleClick = (type) => {
-    console.log('type', type)
+    this.props.handleNewNode(type)
   }
 
   render() {

@@ -3,6 +3,8 @@ import Toolbar from './Toolbar'
 import Container from './Container'
 import Path from './Path'
 import Detail from './Detail'
+// Helpers
+import { Transformer } from '../../../../utils/transformer'
 
 class Finder extends Component {
   state = {
@@ -24,8 +26,17 @@ class Finder extends Component {
     this.setState((prevState) => ({ show: !prevState.show }))
   }
   handleOnClickButton = (node) => {
-    // console.log('node', node)
     this.setState(() => ({ clickNode: node, show: true }))
+  }
+  handleNewNode = (nodeType) => {
+    let node = Transformer(null, nodeType)
+    console.log('nodeOnNewNode', node)
+    this.setState((prevState) =>
+      ({ _node2Show: {children: prevState._node2Show.children.push(node), ...prevState._node2Show} }))
+  }
+  handleEditNode = (node) => {
+  }
+  handleDeleteNode = (node) => {
   }
   render() {
     return (
@@ -35,6 +46,7 @@ class Finder extends Component {
             <Toolbar
               title={this.state._node2Show.title}
               createOption={this.state._node2Show.createOptions}
+              handleNewNode={this.handleNewNode}
             />
             {/*----------CONTAINER SECTION----------*/}
             <Container 

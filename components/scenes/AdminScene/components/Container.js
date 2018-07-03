@@ -55,9 +55,7 @@ export default class Container extends React.Component {
             onDoubleClick={props.handleDoubleClick}
             node={_node}
             buttonClick={props.handleOnClickButton}
-          >
-            {_node.data.title}
-          </Cardy>  
+          />
         </a>
         )
         break;
@@ -77,6 +75,7 @@ export default class Container extends React.Component {
     }
   }
   render () {
+    console.log('container props', this.props)
     return (
       <div className="finderContainer__workzone-work">
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -86,15 +85,3 @@ export default class Container extends React.Component {
     )
   }
 }
-
-
-// <a key={`cardy_${i}`}>
-//             <Cardy
-//               selectLeaf={showDetail}
-//               onDoubleClick={handleDoubleClick}
-//               node={_node}
-//               buttonClick={handleOnClickButton}
-//             >
-//               {_node.data.title}
-//             </Cardy>  
-//           </a>

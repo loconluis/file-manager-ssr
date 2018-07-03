@@ -25,6 +25,7 @@ export default class Cardy extends Component {
   }
 
   render() {
+    console.log('cardy', this.props)
     return (
       <div>
         <div className="cardy"
@@ -55,7 +56,7 @@ export default class Cardy extends Component {
           </div>
         </div>
         <div className="cardy__label">
-          <p>{this.props.children}</p>
+          <p>{this.props.node.data.title}</p>
         </div>
       </div>
     )
