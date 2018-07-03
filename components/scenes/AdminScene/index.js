@@ -1,6 +1,7 @@
 // Core imports
 import React from 'react'
 import Finder from './components/Finder'
+import { DynamicModal } from 'stk-gforms'
 // Helper functions
 import { Transformer } from '../../../utils/transformer'
 // HOC for router on next
@@ -10,7 +11,8 @@ import '../../../styles/_finder.css'
 
 class AreaScene extends React.Component {
   state = {
-    nodeInstance: []
+    nodeInstance: [],
+    modalIsOpen: false,
   }
   async componentDidMount() {
     let nodeID = this.props.router.query.node,
@@ -54,10 +56,31 @@ class AreaScene extends React.Component {
   handleOnClickButton = (node) => {
     this.setState(() => ({ clickNode: node, show: true }))
   }
+  // Handle the create node 
+  onCreate = (node) => {
+  }
+  // Handler to modify the structure to show on modal
+  transformStructure = () => {
+
+  }
+  // handler to close the modal
+  onClose = () => this.setState(() => ({ modalIsOpen: false }))
   // render of finder
   render() {
     return (
       <div>
+        <div id='modal_container'>
+          <DynamicModal
+            onClose={this.onClose}
+            title="Nueva Area"
+            host={'http://apipersona.estratek.com/organization/empresa'}
+            microservice={'organization'}
+            model="area"
+            onSave={this.onCreate}
+            transformStructure={this.transformStructure}
+            isOpen={this.state.modalIsOpen}
+          />
+        </div>
         <Finder
           nodeInstance={this.state.nodeInstance}
           handleDoubleClick={this.handleDoubleClick}

@@ -63,6 +63,7 @@ export default class Container extends React.Component {
       return (
         <a key={`cardy_${i}`}>
           <Cardy
+            single
             selectLeaf={props.showDetail}
             node={_node}
             buttonClick={props.handleOnClickButton}
