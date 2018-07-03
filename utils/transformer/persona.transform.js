@@ -11,7 +11,7 @@ export default class Persona extends Generic{
     
     async setData(persona){
         if(!persona){
-            let data = (await axios.get('http://192.168.0.119:3004/silla/'+this.data.id,{headers:{wp:"demo"}})).data;
+            let data = (await axios.get('http://apipersona.estratek.com/organization/silla/'+this.data.id,{headers:{wp:"demo"}})).data;
             await this.setData(data);
             await this.setChildren();
             await this.setParent();

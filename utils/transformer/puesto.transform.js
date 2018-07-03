@@ -12,7 +12,7 @@ export default class Puesto extends Generic{
     
     async setData(puesto){
         if(!puesto){
-            let data = (await axios.get('http://192.168.0.119:3004/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
+            let data = (await axios.get('http://apipersona.estratek.com/organization/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
             await this.setData(data);
             await this.setChildren();
             await this.setParent();
@@ -24,7 +24,7 @@ export default class Puesto extends Generic{
 
     async setChildren(){
         try{
-            let hijos = (await axios.get('http://192.168.0.119:3004/silla?plaza='+this.data.id,{headers:{wp:"demo"}})).data;
+            let hijos = (await axios.get('http://apipersona.estratek.com/organization/silla?plaza='+this.data.id,{headers:{wp:"demo"}})).data;
             this.data.children = hijos.map((hijo)=>{
                 let classPersona = new Persona(hijo._id);
                 classPersona.setData(hijo);

@@ -18,7 +18,7 @@ export default class Empresa extends Generic{
      */
     async setData(empresa){
         if(!empresa){
-            let data = (await axios.get('http://192.168.0.119:3004/empresa/'+this.data.id,{headers:{wp:"demo"}})).data;
+            let data = (await axios.get('http://apipersona.estratek.com/organization/empresa/'+this.data.id,{headers:{wp:"demo"}})).data;
             await this.setData(data);
             await this.setChildren();
             await this.setParent();
@@ -26,13 +26,13 @@ export default class Empresa extends Generic{
         }else{
             this.data.title = empresa.nombre;
             this.data.props = _.omit(empresa, ['_id']);
-            this.data.structure = (await axios.get('http://192.168.0.119:3004/structure/empresa',{headers:{wp:"demo"}})).data;
+            this.data.structure = (await axios.get('http://apipersona.estratek.com/organization/structure/empresa',{headers:{wp:"demo"}})).data;
         }
     }
 
     async setChildren(){
         try{
-            let areas = (await axios.get('http://192.168.0.119:3004/area?empresa='+this.data.id,{headers:{wp:"demo"}})).data;
+            let areas = (await axios.get('http://apipersona.estratek.com/organization/area?empresa='+this.data.id,{headers:{wp:"demo"}})).data;
             let areasPadre = areas.filter(area=>!area.areapadre && area)
 
             this.data.children = areasPadre.map((area)=>{
@@ -74,7 +74,7 @@ export default class Empresa extends Generic{
     async create(){
         try{
             this.mapDataToProps();
-            this.data.props = (await axios.post('http://192.168.0.119:3004/empresa',this.data.props,{headers:{wp:"demo"}})).data;
+            this.data.props = (await axios.post('http://apipersona.estratek.com/organization/empresa',this.data.props,{headers:{wp:"demo"}})).data;
             this.mapPropsToData();
             return this.data.props;
         }catch(e){
@@ -85,7 +85,7 @@ export default class Empresa extends Generic{
     async save(){
         try{
             this.mapDataToProps();
-            this.data.props = (await axios.put('http://192.168.0.119:3004/empresa/'+this.data.id,this.data.props,{headers:{wp:"demo"}})).data;
+            this.data.props = (await axios.put('http://apipersona.estratek.com/organization/empresa/'+this.data.id,this.data.props,{headers:{wp:"demo"}})).data;
             this.mapPropsToData();
             return this.data.props;
         }catch(e){
@@ -95,7 +95,7 @@ export default class Empresa extends Generic{
 
     async delete(){
         try{
-            let empresa = (await axios.delete('http://192.168.0.119:3004/empresa/'+this.data.id,{headers:{wp:"demo"}})).data;
+            let empresa = (await axios.delete('http://apipersona.estratek.com/organization/empresa/'+this.data.id,{headers:{wp:"demo"}})).data;
             return empresa;
         }catch(e){
             console.log(e);
