@@ -23,7 +23,6 @@ export default class Puesto extends Generic{
             let structure = _.merge(JSON.parse(structurePlaza.structure),JSON.parse(structurePuesto.structure));
             this.data.cleanStructure = _.omit(structure, ['jefeareas','plazas','puesto', 'sillas','valid_tru']);
             this.data.title = puesto.puesto.nombre;
-            this.data.props = _.omit(puesto, ['_id'])
         }
     }
 
