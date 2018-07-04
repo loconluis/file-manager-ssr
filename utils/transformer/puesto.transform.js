@@ -22,7 +22,6 @@ export default class Puesto extends Generic{
             let structurePlaza = (await axios.get('http://apipersona.estratek.com/organization/structure/plaza',{headers:{wp:"demo"}})).data;
             let structure = _.merge(JSON.parse(structurePlaza.structure),JSON.parse(structurePuesto.structure));
             this.data.cleanStructure = _.omit(structure, ['jefeareas','plazas','puesto', 'sillas','valid_tru']);
-            console.log("cleanStructure Puesto", this.data.cleanStructure);
             this.data.title = puesto.puesto.nombre;
             this.data.props = _.omit(puesto, ['_id'])
         }
