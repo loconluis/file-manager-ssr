@@ -20,6 +20,7 @@ export default class Area extends Generic{
         }else{
             this.data.title = area.nombre;
             this.data.props = _.omit(area, ['_id'])
+            this.data.structure = (await axios.get('http://apipersona.estratek.com/organization/structure/area', {headers:{wp: 'demo'}})).data;
         }
     }
 
