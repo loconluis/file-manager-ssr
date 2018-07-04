@@ -16,9 +16,14 @@ export default class Puesto extends Generic{
             await this.setData(data);
             await this.setChildren();
             await this.setParent();
+            await this.setCreateOptions();
         }else{
+            let structurePuesto = (await axios.get('http://apipersona.estratek.com/organization/structure/puesto',{headers:{wp:"demo"}})).data;
+            let structurePlaza = (await axios.get('http://apipersona.estratek.com/organization/structure/plaza',{headers:{wp:"demo"}})).data;
+            let structure = _.merge(JSON.parse(structurePlaza.structure),JSON.parse(structurePuesto.structure));
+            this.data.cleanStructure = _.omit(structure, ['jefeareas','plazas','puesto', 'sillas','valid_tru']);
             this.data.title = puesto.puesto.nombre;
-            this.data.props = _.omit(puesto, ['_id'])
+            this.data.props = puesto;
         }
     }
 

@@ -16,7 +16,7 @@ export default class Workspace extends Generic{
             await this.setParent();
         }else{
             this.data.title = workspace.domain;
-            this.data.props = _.omit(workspace, ['id'])
+            this.data.props = workspace;
         }
     }
 
