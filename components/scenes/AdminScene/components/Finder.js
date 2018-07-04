@@ -4,7 +4,7 @@ import Container from './Container'
 import Path from './Path'
 import Detail from './Detail'
 // Helpers
-import { Transformer } from '../../../../utils/transformer'
+import { mapDataToStructure } from '../../../../utils/transformer'
 
 class Finder extends Component {
   state = {
@@ -18,48 +18,22 @@ class Finder extends Component {
     clickNode: {},
     structure: {}
   }
-  
+  // Core lifecycle on react
   componentWillReceiveProps(nextProps) {
     console.log('this.props.nodeInstance', nextProps.nodeInstance.data)
-    let structure = this.mapDataToStructure(nextProps.nodeInstance.data.props, nextProps.nodeInstance.data.cleanStructure)
+    let structure =  mapDataToStructure(nextProps.nodeInstance.data.props, nextProps.nodeInstance.data.cleanStructure)
     console.log('NewStructure', structure)
     this.setState(() => ({ _node2Show: nextProps.nodeInstance.data, structure }))
   }
-
-  mapDataToStructure = (data, structure) => {
-    if (!data || !structure) {return false};
-    var newStructure={};
-    for (var value in structure){
-      newStructure[value]=Object.assign(structure[value],{}) ;
-      for (var val in data){
-        if (val==value){
-          if (!!data[val] && data[val] instanceof Object){
-            newStructure[value].value= data[val][newStructure[value].valuekey];
-          }else{
-            newStructure[value].value= data[val];
-          }
-        }
-      }
-    }
-    return newStructure;
-  }
-
+  // Handler show Detail
   showDetail = () => {
     this.setState((prevState) => ({ show: !prevState.show }))
   }
+  // Handle show the sidebar with all the info
   handleOnClickButton = (node) => {
     this.setState(() => ({ clickNode: node, show: true }))
   }
-  // handleNewNode = (nodeType) => {
-  //   let node = Transformer(null, nodeType)
-  //   console.log('nodeOnNewNode', node)
-  //   this.setState((prevState) =>
-  //     ({ _node2Show: {children: prevState._node2Show.children.push(node), ...prevState._node2Show} }))
-  // }
-  // handleEditNode = (node) => {
-  // }
-  // handleDeleteNode = (node) => {
-  // }
+  // Core function to render
   render() {
     return (
       <div className="finderContainer">
@@ -69,6 +43,7 @@ class Finder extends Component {
               title={this.state._node2Show.title}
               createOption={this.state._node2Show.createOptions}
               structure={this.state.structure}
+              handleAddNode={this.props.handleAddNode}
             />
             {/*----------CONTAINER SECTION----------*/}
             <Container 

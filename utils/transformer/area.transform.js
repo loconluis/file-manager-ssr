@@ -11,19 +11,24 @@ export default class Area extends Generic{
     }
     
     async setData(area){
-        if(!area){
+        if(this.data.id === null) {
+            let structure = (await axios.get('http://apipersona.estratek.com/organization/structure/area', {headers:{wp: 'demo'}})).data;
+            this.data.structure = JSON.parse(structure.structure)
+            this.data.cleanStructure = _.omit(JSON.parse(structure.structure), ['plazajefe', 'areashijas', 'plazas'])
+            await this.setCreateOptions();
+        } else if (!area) {
             let data = (await axios.get('http://apipersona.estratek.com/organization/area/'+this.data.id,{headers:{wp:"demo"}})).data;
             await this.setData(data);
             await this.setChildren();
             await this.setParent();
             await this.setCreateOptions();
-        }else{
+        } else{
             this.data.title = area.nombre;
             this.data.props = _.omit(area, ['_id'])
             // this.data.structure = (await axios.get('http://apipersona.estratek.com/organization/structure/area', {headers:{wp: 'demo'}})).data;
             let structure = (await axios.get('http://apipersona.estratek.com/organization/structure/area', {headers:{wp: 'demo'}})).data;
             this.data.structure = JSON.parse(structure.structure)
-            this.data.cleanStructure = _.omit(JSON.parse(structure.structure), ['areapadre', 'empresa', 'plazajefe', 'areashijas', 'plazas'])
+            this.data.cleanStructure = _.omit(JSON.parse(structure.structure), ['plazajefe', 'areashijas', 'plazas'])
         }
     }
 
@@ -83,7 +88,7 @@ export default class Area extends Generic{
         ]
     }
 
-    mapDataToProps(){
+        mapDataToProps(){
         this.data.props.nombre = this.data.title;
         this.data.props._id = this.data.id;
     }

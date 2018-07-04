@@ -8,6 +8,19 @@ import { Button,
 import { GenericForm } from 'stk-gforms'
 
 export default class ModalDetail extends Component {
+  state = {
+    form: {}
+  }
+  onChange = (data) => {
+    this.setState(() => ({ form: data }))
+    console.log('data', data)
+  }
+
+  onCreate = () => {
+    this.props.onCreate(this.state.form)
+    this.setState(() => ({ form: {} }))
+  }
+
   render() {
     console.log('this.props.structyre', this.props.structureMapped)
     return (
@@ -15,13 +28,17 @@ export default class ModalDetail extends Component {
         <ModalHeader toggle={this.props.toggle}>Informacion de {this.props.title}</ModalHeader>
         <ModalBody>
           <GenericForm
-            readOnly={true}
+            readOnly={this.props.readOnly}
             structure={this.props.structureMapped}
-            // host={config.HOST}
             host={'http://apipersona.estratek.com'}
+            value={this.state.form || undefined}
+            onChange={this.onChange || undefined }
           />
         </ModalBody>
         <ModalFooter>
+          {
+            this.props.readOnly ? '' : <Button color="primary" onClick={this.onCreate}>Agregar</Button>
+          }
           <Button color="secondary" onClick={this.props.toggle}>Cerrar</Button>
         </ModalFooter>
       </Modal>

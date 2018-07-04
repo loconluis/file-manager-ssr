@@ -14,7 +14,6 @@ export default class Toolbar extends Component {
     dropdownOpen: false,
     modalOpen: false,
   }
-
   // Toggle handler for DropDownList
   toggleDrop = () => {
     this.setState((prevState) => ({ dropdownOpen: !prevState.dropdownOpen }))
@@ -22,24 +21,6 @@ export default class Toolbar extends Component {
   // Toggle handler for modal
   toggleModal = () => {
     this.setState((prevState) => ({ modalOpen: !prevState.modalOpen }))
-  }
-  // mapData
-  mapToDataCreated = (data, structure) => {
-    if (!data || !structure) {return false};
-    var newStructure={};
-    for (var value in structure){
-      newStructure[value]=Object.assign(structure[value],{}) ;
-      for (var val in data){
-        if (val==value){
-          if (!!data[val] && data[val] instanceof Object){
-            newStructure[value].value= data[val][newStructure[value].valuekey];
-          }else{
-            newStructure[value].value= data[val];
-          }
-        }
-      }
-    }
-    return newStructure;
   }
 
   render() {
@@ -59,7 +40,7 @@ export default class Toolbar extends Component {
                 this.props.createOption.map(option => (
                   <DropdownItem
                     key={`${option.type}_btn`}
-                    onClick={() => {this.handleClick(option.type)}}
+                    onClick={() => this.props.handleAddNode(option.type)}
                   >
                     {option.label}
                   </DropdownItem>
@@ -76,6 +57,7 @@ export default class Toolbar extends Component {
         </div>
         <div style={{ position: 'absolute' }}>
           <ModalDetail
+            readOnly={true}
             modalOpen={this.state.modalOpen}
             title={this.props.title}
             structureMapped={this.props.structure}
