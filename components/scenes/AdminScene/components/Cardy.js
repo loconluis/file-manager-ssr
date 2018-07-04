@@ -8,7 +8,7 @@ export default class Cardy extends Component {
 
   handleDoubleClick = () => {
     let validator = {
-      label: this.props.children,
+      label: this.props.node.data.title,
       id: this.props.node.data.id,
       type: this.props.node.data.type,
     }

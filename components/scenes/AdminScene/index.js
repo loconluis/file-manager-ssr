@@ -52,10 +52,10 @@ class AreaScene extends React.Component {
     const { id, type } = validators
     this.props.router.push('/admin?node=' + id + '&type=' + type)
   }
-  // handle double click
-  handleOnClickButton = (node) => {
-    this.setState(() => ({ clickNode: node, show: true }))
-  }
+  // // handle double click
+  // handleOnClickButton = (node) => {
+  //   this.setState(() => ({ clickNode: node, show: true }))
+  // }
   // Handle the create node 
   onCreate = (node) => {
   }
@@ -84,7 +84,7 @@ class AreaScene extends React.Component {
         <Finder
           nodeInstance={this.state.nodeInstance}
           handleDoubleClick={this.handleDoubleClick}
-          handleOnClickButton={this.handleOnClickButton}
+          // handleOnClickButton={this.handleOnClickButton}
           showDetail={this.showDetail}
         />
       </div>

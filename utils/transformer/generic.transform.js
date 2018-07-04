@@ -6,6 +6,7 @@ export default class generic {
             icon:'',
             title:'',
             structure: {},
+            cleanStructure: {},
             props:{},
             children:[],
             createOptions:[]

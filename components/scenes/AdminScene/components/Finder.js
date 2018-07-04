@@ -21,7 +21,7 @@ class Finder extends Component {
   
   componentWillReceiveProps(nextProps) {
     console.log('this.props.nodeInstance', nextProps.nodeInstance.data)
-    let structure = this.mapDataToStructure(nextProps.nodeInstance.data.props, nextProps.nodeInstance.data.structure)
+    let structure = this.mapDataToStructure(nextProps.nodeInstance.data.props, nextProps.nodeInstance.data.cleanStructure)
     console.log('NewStructure', structure)
     this.setState(() => ({ _node2Show: nextProps.nodeInstance.data, structure }))
   }

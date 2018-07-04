@@ -28,8 +28,9 @@ export default class Empresa extends Generic{
             this.data.props = _.omit(empresa, ['_id']);
             // this.data.structure = (await axios.get('http://apipersona.estratek.com/organization/structure/empresa',{headers:{wp:"demo"}})).data;
             let structure = (await axios.get('http://apipersona.estratek.com/organization/structure/empresa',{headers:{wp:"demo"}})).data;
+            this.data.structure = JSON.parse(structure.structure)
             let cleanDataStructure = _.omit(JSON.parse(structure.structure), ['areas', 'puestos'])
-            this.data.structure = cleanDataStructure;
+            this.data.cleanStructure = cleanDataStructure;
         }
     }
 

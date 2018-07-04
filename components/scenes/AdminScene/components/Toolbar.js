@@ -67,12 +67,12 @@ export default class Toolbar extends Component {
               }
             </DropdownMenu>
           </ButtonDropdown>}
-          <Button
+          {this.props.structure && <Button
             color='default'
             onClick={this.toggleModal}
           >
             <i className="fa fa-info-circle" aria-hidden="true" />
-          </Button>
+          </Button>}
         </div>
         <div style={{ position: 'absolute' }}>
           <ModalDetail
