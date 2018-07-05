@@ -32,6 +32,7 @@ export default class Workspace extends Generic{
     async setData(){
         await this.setChildren();
         await this.setParent();
+        await this.setCreateOptions();
     }
 
     async setChildren(){
