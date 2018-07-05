@@ -29,6 +29,7 @@ export default class Empresa extends Generic{
     }
 
     async setStructure(){
+        console.log('empresa structure')
         // this.data.structure = (await axios.get('http://apipersona.estratek.com/organization/structure/empresa',{headers:{wp:"demo"}})).data;
         let structure = (await axios.get('http://apipersona.estratek.com/organization/structure/empresa',{headers:{wp:"demo"}})).data;
         this.data.structure = JSON.parse(structure.structure)

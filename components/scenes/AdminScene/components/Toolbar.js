@@ -50,19 +50,19 @@ export default class Toolbar extends Component {
           </ButtonDropdown>}
           {this.props.structure && <Button
             color='default'
-            onClick={this.toggleModal}
+            onClick={this.props.handleViewNode}
           >
             <i className="fa fa-info-circle" aria-hidden="true" />
           </Button>}
         </div>
         <div style={{ position: 'absolute' }}>
-          <ModalDetail
+          {/*<ModalDetail
             readOnly={true}
             modalOpen={this.state.modalOpen}
             title={this.props.title}
             structureMapped={this.props.structure}
             toggle={this.toggleModal}
-          />
+          />*/}
         </div>
       </div>
     )

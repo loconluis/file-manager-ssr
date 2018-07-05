@@ -12,7 +12,6 @@ export default class Cardy extends Component {
       id: this.props.node.data.id,
       type: this.props.node.data.type,
     }
-    console.log('validators', validator)
     this.props.onDoubleClick(validator)
   }
 
@@ -25,7 +24,6 @@ export default class Cardy extends Component {
   }
 
   render() {
-    console.log('cardy', this.props)
     return (
       <div>
         <div className="cardy"
