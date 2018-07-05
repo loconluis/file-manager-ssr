@@ -12,11 +12,23 @@ export default class Empresa extends Generic{
     }
     
     async init(data){
-        if(!data){
+        if(this.data.id === null){
+            await this.setStructure();
+        }else if(!data){
             data = (await axios.get('http://apipersona.estratek.com/organization/empresa/'+this.data.id,{headers:{wp:"demo"}})).data;
+            this.setProps(data);
+        }else{
+            await this.setStructure();
+            this.setProps(data);
         }
-        this.data.title = data.nombre;
+    }
+
+    setProps(data){
         this.data.props = data;
+        this.mapPropsToData();
+    }
+
+    async setStructure(){
         // this.data.structure = (await axios.get('http://apipersona.estratek.com/organization/structure/empresa',{headers:{wp:"demo"}})).data;
         let structure = (await axios.get('http://apipersona.estratek.com/organization/structure/empresa',{headers:{wp:"demo"}})).data;
         this.data.structure = JSON.parse(structure.structure)

@@ -11,15 +11,27 @@ export default class Puesto extends Generic{
     }
     
     async init(data){
-        if(!data){
+        if(this.data.id === null){
+            await this.setStructure();
+        }else if(!data){
             data = (await axios.get('http://apipersona.estratek.com/organization/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
+            this.setProps(data);
+        }else{
+            await this.setStructure();
+            this.setProps(data);
         }
+    }
+
+    setProps(data){
+        this.data.props = data;
+        this.mapPropsToData();
+    }
+
+    async setStructure(){
         let structurePuesto = (await axios.get('http://apipersona.estratek.com/organization/structure/puesto',{headers:{wp:"demo"}})).data;
         let structurePlaza = (await axios.get('http://apipersona.estratek.com/organization/structure/plaza',{headers:{wp:"demo"}})).data;
         let structure = _.merge(JSON.parse(structurePlaza.structure),JSON.parse(structurePuesto.structure));
         this.data.cleanStructure = _.omit(structure, ['jefeareas','plazas','puesto', 'sillas','valid_tru']);
-        this.data.title = data.puesto.nombre;
-        this.data.props = data;
     }
     
     async setData(){
@@ -54,6 +66,16 @@ export default class Puesto extends Generic{
                 'type':'persona'
             }
         ]
+    }
+
+    mapDataToProps(){
+        this.data.props.puesto.nombre= this.data.title;
+        this.data.props._id = this.data.id;
+    }
+
+    mapPropsToData(){
+        this.data.title = this.data.props.puesto.nombre;
+        this.data.id = this.data.props._id;
     }
 
 }

@@ -9,11 +9,24 @@ export default class Workspace extends Generic{
     }
     
     async init(data){
-        if(!data){
+        if(this.data.id === null){
+            await this.setStructure();
+        }else if(!data){
             data = (await axios.get('http://apipersona.estratek.com/workspace/workspace/'+this.data.id,{headers:{wp:"demo"}})).data;
+            this.setProps(data);
+        }else{
+            await this.setStructure();
+            this.setProps(data);
         }
-        this.data.title = data.domain;
+    }
+
+    setProps(data){
         this.data.props = data;
+        this.mapPropsToData();
+    }
+
+    async setStructure(){
+
     }
 
     async setData(){
@@ -46,5 +59,15 @@ export default class Workspace extends Generic{
                 'type':'empresa'
             }
         ]
+    }
+
+    mapDataToProps(){
+        this.data.props.domain= this.data.title;
+        this.data.props.id = this.data.id;
+    }
+
+    mapPropsToData(){
+        this.data.title = this.data.props.domain;
+        this.data.id = this.data.props.id;
     }
 }
