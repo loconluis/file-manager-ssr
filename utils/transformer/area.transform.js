@@ -10,31 +10,9 @@ export default class Area extends Generic{
         this.data.icon = 'fa fa-building'
     }
     
-<<<<<<< HEAD
     async init(data){
         if(!data){
             data = (await axios.get('http://apipersona.estratek.com/organization/area/'+this.data.id,{headers:{wp:"demo"}})).data;
-=======
-    async setData(area){
-        if(this.data.id === null) {
-            let structure = (await axios.get('http://apipersona.estratek.com/organization/structure/area', {headers:{wp: 'demo'}})).data;
-            this.data.structure = JSON.parse(structure.structure)
-            this.data.cleanStructure = _.omit(JSON.parse(structure.structure), ['plazajefe', 'areashijas', 'plazas'])
-            await this.setCreateOptions();
-        } else if (!area) {
-            let data = (await axios.get('http://apipersona.estratek.com/organization/area/'+this.data.id,{headers:{wp:"demo"}})).data;
-            await this.setData(data);
-            await this.setChildren();
-            await this.setParent();
-            await this.setCreateOptions();
-        } else{
-            this.data.title = area.nombre;
-            this.data.props = area;
-            // this.data.structure = (await axios.get('http://apipersona.estratek.com/organization/structure/area', {headers:{wp: 'demo'}})).data;
-            let structure = (await axios.get('http://apipersona.estratek.com/organization/structure/area', {headers:{wp: 'demo'}})).data;
-            this.data.structure = JSON.parse(structure.structure)
-            this.data.cleanStructure = _.omit(JSON.parse(structure.structure), ['plazajefe', 'areashijas', 'plazas'])
->>>>>>> 6120741b16fc8f53016ab44cfde04a2c9aef8c1d
         }
         this.data.title = data.nombre;
         this.data.props = data;
