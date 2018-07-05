@@ -89,6 +89,7 @@ class AreaScene extends React.Component {
     this.state.nodoAux.data.props = node.form;
     console.log('node', node)
     console.log('node', this.state.nodoAux)
+    this.state.nodoAux.create()
   }
   // Handle edit node for finder
   onEdit = (updates, id) => {
