@@ -10,21 +10,22 @@ export default class Puesto extends Generic{
         this.data.icon = 'fa fa-briefcase'
     }
     
-    async setData(puesto){
-        if(!puesto){
-            let data = (await axios.get('http://apipersona.estratek.com/organization/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
-            await this.setData(data);
-            await this.setChildren();
-            await this.setParent();
-            await this.setCreateOptions();
-        }else{
-            let structurePuesto = (await axios.get('http://apipersona.estratek.com/organization/structure/puesto',{headers:{wp:"demo"}})).data;
-            let structurePlaza = (await axios.get('http://apipersona.estratek.com/organization/structure/plaza',{headers:{wp:"demo"}})).data;
-            let structure = _.merge(JSON.parse(structurePlaza.structure),JSON.parse(structurePuesto.structure));
-            this.data.cleanStructure = _.omit(structure, ['jefeareas','plazas','puesto', 'sillas','valid_tru']);
-            this.data.title = puesto.puesto.nombre;
-            this.data.props = puesto;
+    async init(data){
+        if(!data){
+            data = (await axios.get('http://apipersona.estratek.com/organization/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
         }
+        let structurePuesto = (await axios.get('http://apipersona.estratek.com/organization/structure/puesto',{headers:{wp:"demo"}})).data;
+        let structurePlaza = (await axios.get('http://apipersona.estratek.com/organization/structure/plaza',{headers:{wp:"demo"}})).data;
+        let structure = _.merge(JSON.parse(structurePlaza.structure),JSON.parse(structurePuesto.structure));
+        this.data.cleanStructure = _.omit(structure, ['jefeareas','plazas','puesto', 'sillas','valid_tru']);
+        this.data.title = data.puesto.nombre;
+        this.data.props = data;
+    }
+    
+    async setData(){
+        await this.setChildren();
+        await this.setParent();
+        await this.setCreateOptions();
     }
 
     async setChildren(){
@@ -32,7 +33,7 @@ export default class Puesto extends Generic{
             let hijos = (await axios.get('http://apipersona.estratek.com/organization/silla?plaza='+this.data.id,{headers:{wp:"demo"}})).data;
             this.data.children = hijos.map((hijo)=>{
                 let classPersona = new Persona(hijo._id);
-                classPersona.setData(hijo);
+                classPersona.init(hijo);
                 return classPersona;
             });
         }catch(e){
@@ -43,7 +44,7 @@ export default class Puesto extends Generic{
 
     async setParent(){
         this.data.parent = new Area(this.data.props.area._id);
-        this.data.parent.setData();
+        this.data.parent.init();
     }
 
     async setCreateOptions(){

@@ -10,28 +10,29 @@ export default class Empresa extends Generic{
         super(id,'empresa');
         this.data.icon = 'fa fa-industry'
     }
+    
+    async init(data){
+        if(!data){
+            data = (await axios.get('http://apipersona.estratek.com/organization/empresa/'+this.data.id,{headers:{wp:"demo"}})).data;
+        }
+        this.data.title = data.nombre;
+        this.data.props = data;
+        // this.data.structure = (await axios.get('http://apipersona.estratek.com/organization/structure/empresa',{headers:{wp:"demo"}})).data;
+        let structure = (await axios.get('http://apipersona.estratek.com/organization/structure/empresa',{headers:{wp:"demo"}})).data;
+        this.data.structure = JSON.parse(structure.structure)
+        let cleanDataStructure = _.omit(JSON.parse(structure.structure), ['areas', 'puestos'])
+        this.data.cleanStructure = cleanDataStructure;
+    }
 
     /**
      * 
      * Setters
      *  
      */
-    async setData(empresa){
-        if(!empresa){
-            let data = (await axios.get('http://apipersona.estratek.com/organization/empresa/'+this.data.id,{headers:{wp:"demo"}})).data;
-            await this.setData(data);
-            await this.setChildren();
-            await this.setParent();
-            await this.setCreateOptions();
-        }else{
-            this.data.title = empresa.nombre;
-            this.data.props = empresa;
-            // this.data.structure = (await axios.get('http://apipersona.estratek.com/organization/structure/empresa',{headers:{wp:"demo"}})).data;
-            let structure = (await axios.get('http://apipersona.estratek.com/organization/structure/empresa',{headers:{wp:"demo"}})).data;
-            this.data.structure = JSON.parse(structure.structure)
-            let cleanDataStructure = _.omit(JSON.parse(structure.structure), ['areas', 'puestos'])
-            this.data.cleanStructure = cleanDataStructure;
-        }
+    async setData(){
+        await this.setChildren();
+        await this.setParent();
+        await this.setCreateOptions();
     }
 
     async setChildren(){
@@ -41,7 +42,7 @@ export default class Empresa extends Generic{
 
             this.data.children = areasPadre.map((area)=>{
                 let classArea = new Area(area._id);
-                classArea.setData(area);
+                classArea.init(area);
                 return classArea;
             });
         }catch(e){
@@ -53,7 +54,7 @@ export default class Empresa extends Generic{
     async setParent(){
         let idworkspace = '5b0749205bd37f2dbd0f33f5';
         this.data.parent = new Workspace(idworkspace);
-        await this.data.parent.setData();
+        await this.data.parent.init();
     }
 
     async setCreateOptions(){

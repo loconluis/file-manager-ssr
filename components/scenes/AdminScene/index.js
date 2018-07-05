@@ -21,10 +21,12 @@ class AreaScene extends React.Component {
 
     if (nodeID === wpID) {
       let nodeInstance = Transformer('5b0749205bd37f2dbd0f33f5','workspace');
+      await nodeInstance.init();
       await nodeInstance.setData();
       return this.setState(() => ({ nodeInstance }))
     } else {
       let nodeInstance = Transformer(nodeID, nodeType);
+      await nodeInstance.init();
       await nodeInstance.setData();
       return this.setState(() => ({ nodeInstance }))
     }
@@ -35,10 +37,12 @@ class AreaScene extends React.Component {
     wpID = '5b0749205bd37f2dbd0f33f5'
     if (nodeID === wpID) {
       let nodeInstance = Transformer('5b0749205bd37f2dbd0f33f5','workspace');
+      await nodeInstance.init();
       await nodeInstance.setData();
       return this.setState(() => ({ nodeInstance }))
     } else {
       let nodeInstance = Transformer(nodeID, nodeType);
+      await nodeInstance.init();
       await nodeInstance.setData();
       return this.setState(() => ({ nodeInstance }))
     }

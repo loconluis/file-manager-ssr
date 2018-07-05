@@ -9,20 +9,21 @@ export default class Persona extends Generic{
         this.data.icon = 'https://medizzy.com/_nuxt/img/user-placeholder.d2a3ff8.png'
     }
     
-    async setData(persona){
-        if(!persona){
-            let data = (await axios.get('http://apipersona.estratek.com/organization/silla/'+this.data.id,{headers:{wp:"demo"}})).data;
-            await this.setData(data);
-            await this.setChildren();
-            await this.setParent();
-        }else{
-            this.data.title = persona.persona.nombrepreferido;
-            this.data.props = persona;
-            // this.data.structure = (await axios.get('http://apipersona.estratek.com/organization/structure/silla', {headers:{wp: 'demo'}})).data;
-            let structure = (await axios.get('http://apipersona.estratek.com/organization/structure/silla', {headers:{wp: 'demo'}})).data;
-            this.data.structure = JSON.parse(structure.structure)
-            this.data.cleanStructure = _.omit(JSON.parse(structure.structure), [''])
+    async init(data){
+        if(!data){
+            data = (await axios.get('http://apipersona.estratek.com/organization/silla/'+this.data.id,{headers:{wp:"demo"}})).data;
         }
+        this.data.title = data.persona.nombrepreferido;
+        this.data.props = data;
+        // this.data.structure = (await axios.get('http://apipersona.estratek.com/organization/structure/silla', {headers:{wp: 'demo'}})).data;
+        let structure = (await axios.get('http://apipersona.estratek.com/organization/structure/silla', {headers:{wp: 'demo'}})).data;
+        this.data.structure = JSON.parse(structure.structure)
+        this.data.cleanStructure = _.omit(JSON.parse(structure.structure), [''])
+    }
+    
+    async setData(){
+        await this.setChildren();
+        await this.setParent();
     }
 
     async setChildren(){
@@ -30,8 +31,8 @@ export default class Persona extends Generic{
     }   
     
     async setParent(){
-        this.data.parent = new Area(this.data.props.plaza._id);
-        this.data.parent.setData();
+        this.data.parent = new Puesto(this.data.props.plaza._id);
+        this.data.parent.init();
     }
 
 }
