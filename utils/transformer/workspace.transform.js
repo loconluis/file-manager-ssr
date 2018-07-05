@@ -15,7 +15,6 @@ export default class Workspace extends Generic{
             data = (await axios.get('http://apipersona.estratek.com/workspace/workspace/'+this.data.id,{headers:{wp:"demo"}})).data;
             this.setProps(data);
         }else{
-            await this.setStructure();
             this.setProps(data);
         }
     }
@@ -37,11 +36,11 @@ export default class Workspace extends Generic{
     async setChildren(){
         try{
             let empresas = (await axios.get('http://apipersona.estratek.com/organization/empresa',{headers:{wp:"demo"}})).data;
-            this.data.children = empresas.map((empresa)=>{
+            this.data.children = await Promise.all(empresas.map(async (empresa)=>{
                 let classEmpresa = new Empresa(empresa._id);
-                classEmpresa.init(empresa);
+                await classEmpresa.init(empresa);
                 return classEmpresa;
-            });
+            }));
         }catch(e){
             console.log(e);
         }

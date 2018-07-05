@@ -18,7 +18,6 @@ export default class Empresa extends Generic{
             data = (await axios.get('http://apipersona.estratek.com/organization/empresa/'+this.data.id,{headers:{wp:"demo"}})).data;
             this.setProps(data);
         }else{
-            await this.setStructure();
             this.setProps(data);
         }
     }
@@ -52,11 +51,11 @@ export default class Empresa extends Generic{
             let areas = (await axios.get('http://apipersona.estratek.com/organization/area?empresa='+this.data.id,{headers:{wp:"demo"}})).data;
             let areasPadre = areas.filter(area=>!area.areapadre && area)
 
-            this.data.children = areasPadre.map((area)=>{
+            this.data.children = await Promise.all(areasPadre.map(async (area)=>{
                 let classArea = new Area(area._id);
-                classArea.init(area);
+                await classArea.init(area);
                 return classArea;
-            });
+            }));
         }catch(e){
             console.log(e);
         }

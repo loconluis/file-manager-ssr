@@ -5,7 +5,7 @@ import Puesto from './puesto.transform'
 import Empresa from './empresa.transform'
 
 export default class Area extends Generic{
-    constructor(id){
+    constructor(id, structure){
         super(id,'area');
         this.data.icon = 'fa fa-building'
     }
@@ -17,7 +17,6 @@ export default class Area extends Generic{
             data = (await axios.get('http://apipersona.estratek.com/organization/area/'+this.data.id,{headers:{wp:"demo"}})).data;
             this.setProps(data);
         }else{
-            await this.setStructure();
             this.setProps(data);
         }
     }
@@ -28,10 +27,12 @@ export default class Area extends Generic{
     }
 
     async setStructure(){
-        // this.data.structure = (await axios.get('http://apipersona.estratek.com/organization/structure/area', {headers:{wp: 'demo'}})).data;
-        let structure = (await axios.get('http://apipersona.estratek.com/organization/structure/area', {headers:{wp: 'demo'}})).data;
-        this.data.structure = JSON.parse(structure.structure)
-        this.data.cleanStructure = _.omit(JSON.parse(structure.structure), ['areapadre', 'empresa', 'plazajefe', 'areashijas', 'plazas'])
+        if(!Object.keys(this.data.structure).length && !Object.keys(this.data.cleanStructure).length){
+            // this.data.structure = (await axios.get('http://apipersona.estratek.com/organization/structure/area', {headers:{wp: 'demo'}})).data;
+            let structure = (await axios.get('http://apipersona.estratek.com/organization/structure/area', {headers:{wp: 'demo'}})).data;
+            this.data.structure = JSON.parse(structure.structure)
+            this.data.cleanStructure = _.omit(JSON.parse(structure.structure), ['areapadre', 'empresa', 'plazajefe', 'areashijas', 'plazas'])
+        }
     }
     
     async setData(){
@@ -51,22 +52,24 @@ export default class Area extends Generic{
              */
             let children = [];
             let types = Object.keys(hijos);
-            types.map(type=>{
-                let hijostype = hijos[type].map((hijo)=>{
+            await Promise.all(types.map(async type=>{
+                let hijostype = await Promise.all(hijos[type].map(async (hijo)=>{
                     let tempclass = null;
                     switch(type){
                         case 'area':
                             tempclass = new Area(hijo._id);
+                            tempclass.data.structure = this.data.structure;
+                            tempclass.data.cleanStructure = this.data.cleanStructure;
                             break;
                         case 'puesto':
                             tempclass = new Puesto(hijo._id);
                             break;
                     }
-                    tempclass.init(hijo);
+                    await tempclass.init(hijo);
                     return tempclass;
-                });
+                }));
                 children = _.union(children,hijostype);
-            });
+            }));
             this.data.children = children;
         }catch(e){
             console.log(e);
