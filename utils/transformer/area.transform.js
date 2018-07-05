@@ -28,10 +28,11 @@ export default class Area extends Generic{
 
     async setStructure(){
         if(!Object.keys(this.data.structure).length && !Object.keys(this.data.cleanStructure).length){
+            console.log('jsjjsjs')
             // this.data.structure = (await axios.get('http://apipersona.estratek.com/organization/structure/area', {headers:{wp: 'demo'}})).data;
             let structure = (await axios.get('http://apipersona.estratek.com/organization/structure/area', {headers:{wp: 'demo'}})).data;
             this.data.structure = JSON.parse(structure.structure)
-            this.data.cleanStructure = _.omit(JSON.parse(structure.structure), ['areapadre', 'empresa', 'plazajefe', 'areashijas', 'plazas'])
+            this.data.cleanStructure = _.omit(JSON.parse(structure.structure), ['plazajefe', 'areashijas', 'plazas'])
         }
     }
     

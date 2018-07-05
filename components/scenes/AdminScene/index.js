@@ -13,8 +13,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 class AreaScene extends React.Component {
   state = {
-    nodeInstance: [],
-    modalIsOpen: false,
+    nodeInstance: {},
+    modalAddIsOpen: false,
+    modalViewIsOpen: false,
+    nodoAux: {data:{}},
     structure2Add: {}
   }
   // Core function on React
@@ -27,11 +29,13 @@ class AreaScene extends React.Component {
       let nodeInstance = Transformer('5b0749205bd37f2dbd0f33f5','workspace');
       await nodeInstance.init();
       await nodeInstance.setData();
+      await nodeInstance.setStructure()
       return this.setState(() => ({ nodeInstance }))
     } else {
       let nodeInstance = Transformer(nodeID, nodeType);
       await nodeInstance.init();
       await nodeInstance.setData();
+      await nodeInstance.setStructure()
       return this.setState(() => ({ nodeInstance }))
     }
   }
@@ -44,11 +48,13 @@ class AreaScene extends React.Component {
       let nodeInstance = Transformer('5b0749205bd37f2dbd0f33f5','workspace');
       await nodeInstance.init();
       await nodeInstance.setData();
+      await nodeInstance.setStructure()
       return this.setState(() => ({ nodeInstance }))
     } else {
       let nodeInstance = Transformer(nodeID, nodeType);
       await nodeInstance.init();
       await nodeInstance.setData();
+      await nodeInstance.setStructure()
       return this.setState(() => ({ nodeInstance }))
     }
   }
@@ -63,21 +69,23 @@ class AreaScene extends React.Component {
   }
   // ToggleAddModal
   toggleAdd = async (type) => {
-    console.log('nodeType', typeof type)
     if (typeof type === 'string') {
       let str = Transformer(null, type)
-      await str.setData()
-      let _str = this.getImplictData(type, str.data.cleanStructure)
-      console.log('_str', _str)
+      await str.init()
+      await str.setStructure()
+      str.data.cleanStructure = this.getImplictData(type, str.data.cleanStructure)
       // this.setState(() => ({  }))
-      this.setState((prevState) => ({ modalIsOpen: !prevState.modalIsOpen, structure2Add: {..._str} }))
+      this.setState((prevState) => ({ modalIsOpen: !prevState.modalIsOpen, nodoAux: str }))
     } else {
       this.setState((prevState) => ({ modalIsOpen: !prevState.modalIsOpen }))
     }
   }
+  // ToggleViewModal
+  toggleView =  () => {
+    this.setState((prevState) => ({ modalViewIsOpen: !prevState.modalViewIsOpen }))
+  }
   // Handle create node for finder
   onCreate = (node) => {
-    console.log('im in index create', node.form)
     this.setState(() => ({ modalIsOpen: false }))
   }
   // Handle edit node for finder
@@ -90,6 +98,7 @@ class AreaScene extends React.Component {
   onClose = () => this.setState(() => ({ modalIsOpen: false }))
   // Check implict data to structure
   getImplictData = (type, structure) => {
+    console.log('structure', structure)
     switch (type) {
       case 'area':
         return {
@@ -97,12 +106,12 @@ class AreaScene extends React.Component {
           empresa: {
             ...structure.empresa,
             disabled: true,
-            value: this.state.nodeInstance.data.props.empresa._id
+            value: this.state.nodeInstance.data.type !== 'empresa' ? this.state.nodeInstance.data.props.empresa._id : this.state.nodeInstance.data.id
           },
           areapadre: {
             ...structure.areapadre,
             disabled: true,
-            value: this.state.nodeInstance.data.id
+            value: this.state.nodeInstance.data.type === 'empresa' ?  undefined : this.state.nodeInstance.data.id
           }
         }
         break;
@@ -116,18 +125,26 @@ class AreaScene extends React.Component {
   }
   // render of finder
   render() {
-    console.log('this.state.nodeInstance on Index', this.state.nodeInstance)
+    console.log('this.state.nodoaux', this.state.nodoAux)
     return (
       <div>
-        <div id='modal_container'>
-        <ModalDetail
-          readOnly={false}
-          modalOpen={this.state.modalIsOpen}
-          structureMapped={this.state.structure2Add}
-          toggle={this.toggleAdd}
-          onCreate={this.onCreate}
-        />
-        </div>
+        {this.state.nodeInstance.data && 
+          <div id='modal_container'>
+            {<ModalDetail
+              readOnly={false}
+              modalOpen={this.state.modalIsOpen}
+              toggle={this.toggleAdd}
+              structureMapped={this.state.nodoAux.data.cleanStructure}
+              // onCreate={this.onCreate}
+            />}
+            <ModalDetail
+              readOnly={true}
+              modalOpen={this.state.modalViewIsOpen}
+              title={this.state.nodeInstance.title}
+              structureMapped={this.state.nodeInstance.data.cleanStructure}
+              toggle={this.toggleView}
+            />
+          </div>}
         <Finder
           nodeInstance={this.state.nodeInstance}
           handleDoubleClick={this.handleDoubleClick}

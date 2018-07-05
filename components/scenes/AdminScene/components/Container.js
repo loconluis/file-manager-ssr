@@ -76,7 +76,6 @@ export default class Container extends React.Component {
     }
   }
   render () {
-    console.log('container props', this.props)
     return (
       <div className="finderContainer__workzone-work">
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>

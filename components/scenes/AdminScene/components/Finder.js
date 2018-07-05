@@ -19,8 +19,10 @@ class Finder extends Component {
     structure: {}
   }
   // Core lifecycle on react
-  componentWillReceiveProps(nextProps) {
-    console.log('this.props.nodeInstance', nextProps.nodeInstance.data)
+  async componentWillReceiveProps(nextProps) {
+    // console.log('this.props.nodeInstance', nextProps.nodeInstance)
+    await nextProps.nodeInstance.setStructure()
+    // console.log('this.props.nodeInstance 2', nextProps.nodeInstance)
     let structure =  mapDataToStructure(nextProps.nodeInstance.data.props, nextProps.nodeInstance.data.cleanStructure)
     console.log('NewStructure', structure)
     this.setState(() => ({ _node2Show: nextProps.nodeInstance.data, structure }))
