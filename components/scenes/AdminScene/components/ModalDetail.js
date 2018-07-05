@@ -9,8 +9,14 @@ import { GenericForm } from 'stk-gforms'
 
 export default class ModalDetail extends Component {
   state = {
-    form: {}
+    form: {},
+    showStructure: {}
   }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(() => ({ showStructure: nextProps.structureMapped }))
+  }
+
   onChange = (data) => {
     this.setState(() => ({ form: data }))
   }
@@ -27,7 +33,7 @@ export default class ModalDetail extends Component {
         <ModalBody>
           <GenericForm
             readOnly={this.props.readOnly}
-            structure={this.props.structureMapped}
+            structure={this.state.showStructure}
             host={'http://apipersona.estratek.com'}
             value={this.state.form || undefined}
             onChange={this.onChange || undefined }
