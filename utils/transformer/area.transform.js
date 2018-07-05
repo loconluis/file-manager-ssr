@@ -111,7 +111,6 @@ export default class Area extends Generic{
 
     async create(){
         try{
-            this.mapDataToProps();
             this.data.props = (await axios.post('http://apipersona.estratek.com/organization/empresa',this.data.props,{headers:{wp:"demo"}})).data;
             this.mapPropsToData();
             return this.data.props;
