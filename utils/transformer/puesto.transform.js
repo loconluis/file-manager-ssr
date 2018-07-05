@@ -16,6 +16,7 @@ export default class Puesto extends Generic{
         }else if(!data){
             data = (await axios.get('http://apipersona.estratek.com/organization/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
             this.setProps(data);
+            await this.setParent();
         }else{
             this.setProps(data);
         }
@@ -50,7 +51,6 @@ export default class Puesto extends Generic{
         }catch(e){
             console.log(e);
         }
-
     }   
 
     async setParent(){

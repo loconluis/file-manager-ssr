@@ -15,6 +15,7 @@ export default class Persona extends Generic{
         }else if(!data){
             data = (await axios.get('http://apipersona.estratek.com/organization/silla/'+this.data.id,{headers:{wp:"demo"}})).data;
             this.setProps(data);
+            await this.setParent();
         }else{
             await this.setStructure();
             this.setProps(data);

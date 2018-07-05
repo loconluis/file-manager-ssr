@@ -14,6 +14,7 @@ export default class Workspace extends Generic{
         }else if(!data){
             data = (await axios.get('http://apipersona.estratek.com/workspace/workspace/'+this.data.id,{headers:{wp:"demo"}})).data;
             this.setProps(data);
+            await this.setParent();
         }else{
             this.setProps(data);
         }

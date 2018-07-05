@@ -17,6 +17,7 @@ export default class Empresa extends Generic{
         }else if(!data){
             data = (await axios.get('http://apipersona.estratek.com/organization/empresa/'+this.data.id,{headers:{wp:"demo"}})).data;
             this.setProps(data);
+            await this.setParent();
         }else{
             this.setProps(data);
         }
@@ -93,18 +94,17 @@ export default class Empresa extends Generic{
             this.mapPropsToData();
             return this.data.props;
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 
     async save(){
         try{
-            this.mapDataToProps();
             this.data.props = (await axios.put('http://apipersona.estratek.com/organization/empresa/'+this.data.id,this.data.props,{headers:{wp:"demo"}})).data;
             this.mapPropsToData();
             return this.data.props;
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 
@@ -113,7 +113,7 @@ export default class Empresa extends Generic{
             let empresa = (await axios.delete('http://apipersona.estratek.com/organization/empresa/'+this.data.id,{headers:{wp:"demo"}})).data;
             return empresa;
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 
