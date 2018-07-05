@@ -58,4 +58,33 @@ export default class Persona extends Generic{
         this.data.id = this.data.props._id;
     }
 
+    async create(){
+        try{
+            this.data.props = (await axios.post('http://apipersona.estratek.com/organization/silla',this.data.props,{headers:{wp:"demo"}})).data;
+            this.mapPropsToData();
+            return this.data.props;
+        }catch(e){
+            console.log(e);
+        }
+    }
+
+    async save(){
+        try{
+            this.data.props = (await axios.put('http://apipersona.estratek.com/organization/silla/'+this.data.id,this.data.props,{headers:{wp:"demo"}})).data;
+            this.mapPropsToData();
+            return this.data.props;
+        }catch(e){
+            console.log(e);
+        }
+    }
+
+    async delete(){
+        try{
+            let empresa = (await axios.delete('http://apipersona.estratek.com/organization/silla/'+this.data.id,{headers:{wp:"demo"}})).data;
+            return empresa;
+        }catch(e){
+            console.log(e);
+        }
+    }
+
 }

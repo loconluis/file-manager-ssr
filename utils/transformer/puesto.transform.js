@@ -17,13 +17,27 @@ export default class Puesto extends Generic{
             data = (await axios.get('http://apipersona.estratek.com/organization/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
             this.setProps(data);
             await this.setParent();
+            await this.setStructure();
         }else{
             this.setProps(data);
         }
-    }
+    } 
 
     setProps(data){
-        this.data.props = data;
+        let props = {
+            _id:data._id,
+            nombre:data.puesto.nombre,
+            area:data.area._id,
+            puesto:data.puesto._id,
+            perfilpuesto:data.puesto.perfilpuesto,
+            familiapuesto:data.puesto.familiapuesto,
+            centrodecosto:data.centrodecosto._id,
+            empresa:data.puesto.empresa,
+            descripcion:data.puesto.descripcion,
+            cantidad:data.cantidad,
+            valid_thru:data.valid_thru
+        }
+        this.data.props = props;
         this.mapPropsToData();
     }
 
@@ -54,7 +68,7 @@ export default class Puesto extends Generic{
     }   
 
     async setParent(){
-        this.data.parent = new Area(this.data.props.area._id);
+        this.data.parent = new Area(this.data.props.area);
         this.data.parent.init();
     }
 
@@ -68,13 +82,78 @@ export default class Puesto extends Generic{
     }
 
     mapDataToProps(){
-        this.data.props.puesto.nombre= this.data.title;
+        this.data.props.nombre= this.data.title;
         this.data.props._id = this.data.id;
     }
 
     mapPropsToData(){
-        this.data.title = this.data.props.puesto.nombre;
+        this.data.title = this.data.props.nombre;
         this.data.id = this.data.props._id;
+    }
+
+    async create(){
+        try{
+            let nuevopuesto = {
+                nombre:this.data.props.nombre,
+                perfilpuesto:this.data.props.perfilpuesto,
+                familiapuesto:this.data.props.familiapuesto,
+                empresa:this.data.props.empresa,
+                descripcion:this.data.props.descripcion,
+                valid_tru:this.data.props.valid_thru
+            }
+            let puesto = (await axios.post('http://apipersona.estratek.com/organization/puesto/',nuevopuesto,{headers:{wp:"demo"}})).data;
+            let nuevaplaza = {
+                nombre:this.data.props.nombre,
+                area:this.data.props.area,
+                puesto:puesto._id,
+                cantidad:this.data.props.cantidad,
+                centrodecosto:this.data.props.centrodecosto,
+                valid_thru:this.data.props.valid_thru
+            }
+            let plaza = (await axios.post('http://apipersona.estratek.com/organization/plaza/',nuevaplaza,{headers:{wp:"demo"}})).data;
+            this.setProps(plaza);
+            this.mapPropsToData();
+            return this.data.props;
+        }catch(e){
+            console.log(e);
+        }
+    }
+
+    async save(){
+        try{
+            let editPuesto = {
+                nombre:this.data.props.nombre,
+                perfilpuesto:this.data.props.perfilpuesto,
+                familiapuesto:this.data.props.familiapuesto,
+                empresa:this.data.props.empresa,
+                descripcion:this.data.props.descripcion,
+                valid_tru:this.data.props.valid_thru
+            }
+            let puesto = (await axios.put('http://apipersona.estratek.com/organization/puesto/'+this.data.props.puesto,editPuesto,{headers:{wp:"demo"}})).data;
+            let editplaza = {
+                nombre:this.data.props.nombre,
+                area:this.data.props.area,
+                puesto:puesto._id,
+                cantidad:this.data.props.cantidad,
+                centrodecosto:this.data.props.centrodecosto,
+                valid_thru:this.data.props.valid_thru
+            }
+            let plaza = (await axios.put('http://apipersona.estratek.com/organization/plaza/'+this.data.props.id,editplaza,{headers:{wp:"demo"}})).data;
+            this.setProps(plaza);
+            this.mapPropsToData();
+            return this.data.props;
+        }catch(e){
+            console.log(e);
+        }
+    }
+
+    async delete(){
+        try{
+            let plaza = (await axios.delete('http://apipersona.estratek.com/organization/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
+            return empresa;
+        }catch(e){
+            console.log(e);
+        }
     }
 
 }
