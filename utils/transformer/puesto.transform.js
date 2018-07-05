@@ -11,7 +11,13 @@ export default class Puesto extends Generic{
     }
     
     async setData(puesto){
-        if(!puesto){
+        if(this.data.id === null) {
+            let structurePuesto = (await axios.get('http://apipersona.estratek.com/organization/structure/puesto',{headers:{wp:"demo"}})).data;
+            let structurePlaza = (await axios.get('http://apipersona.estratek.com/organization/structure/plaza',{headers:{wp:"demo"}})).data;
+            let structure = _.merge(JSON.parse(structurePlaza.structure),JSON.parse(structurePuesto.structure));
+            this.data.structure = structure
+            this.data.cleanStructure = _.omit(structure, ['jefeareas','plazas','puesto', 'sillas','valid_tru']);
+        } else if(!puesto){
             let data = (await axios.get('http://apipersona.estratek.com/organization/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
             await this.setData(data);
             await this.setChildren();
