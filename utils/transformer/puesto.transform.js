@@ -18,7 +18,6 @@ export default class Puesto extends Generic{
             this.setProps(data);
             await this.setParent();
             await this.setStructure();
-            await this.getPosibleParents();
         }else{
             this.setProps(data);
         }
@@ -83,7 +82,8 @@ export default class Puesto extends Generic{
     }
 
     async getPosibleParents(){
-        let plazas = (await axios.get('http://apipersona.estratek.com/organization/plaza/tree?empresa='+this.data.props.empresa,{headers:{wp:"demo"}})).data;
+        let area = (await axios.get('http://apipersona.estratek.com/organization/empresa/tree?empresa='+this.data.props.empresa,{headers:{wp:"demo"}})).data;
+        console.log("area",area);
         let posibleParents = [];
         let profundidad = -1;
         let recorrerHijos = function(node){
@@ -92,7 +92,7 @@ export default class Puesto extends Generic{
             for(let i = 0; i<=profundidad;i++){
                 dash += '--';
             }
-            posibleParents.push({'label':dash+node.puesto.nombre,'value':node._id});
+            posibleParents.push({'label':dash+node.nombre,'value':node._id});
             if(node.children.length>0){
                 node.children.map((hijo)=>{
                     recorrerHijos(hijo);
@@ -100,10 +100,7 @@ export default class Puesto extends Generic{
             }
             profundidad--;
         }
-        plazas.map((plaza)=>{
-            recorrerHijos(plaza);
-            profundidad = -1;
-        });
+        recorrerHijos(area);
         return posibleParents;
     }
 
