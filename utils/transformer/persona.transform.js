@@ -108,7 +108,7 @@ export default class Persona extends Generic{
             let newSilla = {
                 persona:this.data.props.persona,
                 nombre:this.data.props.nombre+' '+this.data.parent.data.props.nombre,
-                plaza:this.data.parent.data.id,
+                plaza:this.data.props.plaza,
                 centrodecosto:this.data.props.centrodecosto,
                 horario:this.data.props.horario,
                 contrato:this.data.props.contrato,
