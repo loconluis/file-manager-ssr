@@ -98,7 +98,26 @@ export default class Area extends Generic{
     }
 
     async getPosibleParents(){
-        let hijos = (await axios.get('http://apipersona.estratek.com/organization/area/finderchilds?area='+this.data.id,{headers:{wp:"demo"}})).data;
+        let area = (await axios.get('http://apipersona.estratek.com/organization/empresa/tree?empresa='+this.data.props.empresa._id,{headers:{wp:"demo"}})).data;
+        console.log("area",area);
+        let posibleParents = [];
+        let profundidad = -1;
+        let recorrerHijos = function(node){
+            profundidad++;
+            let dash = '';
+            for(let i = 0; i<=profundidad;i++){
+                dash += '--';
+            }
+            posibleParents.push({'label':dash+node.nombre,'value':node._id});
+            if(node.children.length>0){
+                node.children.map((hijo)=>{
+                    recorrerHijos(hijo);
+                });
+            }
+            profundidad--;
+        }
+        recorrerHijos(area);
+        return posibleParents;
     }
 
     mapDataToProps(){
