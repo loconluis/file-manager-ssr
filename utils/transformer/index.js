@@ -47,3 +47,16 @@ export const mapDataToStructure = (data, structure) => {
     }
     return newStructure;
   }
+
+  export const getParentArr = (node, arr = []) => {
+      let x = arr;
+      console.log('node', node)
+      if (node.data && node.data.parent) {
+          x.push({ id: node.data.id, title: node.data.title, type: node.data.type })
+          getParentArr(node.data.parent, x)
+      } else {
+        x.push({ id: node.data.id, title: node.data.title, type: node.data.type })
+      }
+
+      return x;
+  }

@@ -3,7 +3,7 @@ import React from 'react'
 import Finder from './components/Finder'
 import ModalDetail from './components/ModalDetail'
 // Helper functions
-import { Transformer, mapDataToStructure } from '../../../utils/transformer'
+import { Transformer, mapDataToStructure, getParentArr } from '../../../utils/transformer'
 // HOC for router on next
 import { withRouter } from 'next/router'
 // StyleS
@@ -33,12 +33,14 @@ class AreaScene extends React.Component {
       await nodeInstance.init();
       await nodeInstance.setData();
       await nodeInstance.setStructure()
+      console.log('getParArr', getParentArr(nodeInstance))
       return this.setState(() => ({ nodeInstance }))
     } else {
       let nodeInstance = Transformer(nodeID, nodeType);
       await nodeInstance.init();
       await nodeInstance.setData();
       await nodeInstance.setStructure()
+      console.log('getParArr', getParentArr(nodeInstance))
       return this.setState(() => ({ nodeInstance }))
     }
   }
@@ -232,7 +234,6 @@ class AreaScene extends React.Component {
         func: this.onDelete
       },
     ]
-    console.log('nodeInstance', this.state.nodeInstance)
     return (
       <div>
         {this.state.nodeInstance.data && 
