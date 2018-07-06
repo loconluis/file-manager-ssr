@@ -89,7 +89,7 @@ export default class Persona extends Generic{
             this.mapPropsToData();
             return this.data.props;
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 
@@ -99,7 +99,7 @@ export default class Persona extends Generic{
             this.mapPropsToData();
             return this.data.props;
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 
@@ -112,16 +112,16 @@ export default class Persona extends Generic{
             this.setProps(silla);
             this.mapPropsToData();
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 
     async delete(){
         try{
-            let empresa = (await axios.delete('http://apipersona.estratek.com/organization/silla/'+this.data.id,{headers:{wp:"demo"}})).data;
-            return empresa;
+            let persona = (await axios.delete('http://apipersona.estratek.com/organization/silla/'+this.data.id,{headers:{wp:"demo"}})).data;
+            return persona;
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 

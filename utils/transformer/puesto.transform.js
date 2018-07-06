@@ -138,7 +138,7 @@ export default class Puesto extends Generic{
             this.mapPropsToData();
             return this.data.props;
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 
@@ -167,7 +167,7 @@ export default class Puesto extends Generic{
             this.mapPropsToData();
             return this.data.props;
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 
@@ -180,7 +180,7 @@ export default class Puesto extends Generic{
             this.setProps(plaza);
             this.mapPropsToData();
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 
@@ -189,7 +189,7 @@ export default class Puesto extends Generic{
             let plaza = (await axios.delete('http://apipersona.estratek.com/organization/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
             return empresa;
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 
