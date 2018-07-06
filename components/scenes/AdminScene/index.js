@@ -109,14 +109,18 @@ class AreaScene extends React.Component {
     _nodeIn.data.children = [..._nodeIn.data.children, this.state.nodeAux]
     this.setState(() => ({ 
       modalAddIsOpen: false,
-      _nodeIn
+      nodeInstance: _nodeIn
     }))
   }
   // Handle edit node for finder
-  onEdit = (node) => {
-    console.log('node editted', node)
-    this.state.nodeAux.data.props = node.form
-    this.state.nodeAux.save()
+  onEdit = async (node) => {
+    let x = this.state.nodeInstance.data.children.filter(el => el.data.id === node.form._id)
+    x[0].data.props = node.form
+    await x[0].save()
+    this.setState(() => ({
+      modalEditIsOpen: false,
+    }))
+    console.log('holi')
   }
   // Handle delete node for finder
   onDelete = (id) => {
