@@ -23,15 +23,33 @@ export default class Persona extends Generic{
     }
 
     setProps(data){
-        this.data.props = data;
+        let props = {
+            persona:data.persona._id,
+            nombre:data.persona.nombrepreferido,
+            puesto:data.plaza.puesto,
+            plaza:data.plaza._id,
+            centrodecosto:data.centrodecosto._id,
+            horario:data.horario._id,
+            contrato:data.contrato._id,
+            salario:data.salario._id,
+            fechainicio:data.fechainicio,
+            fechafin:data.fechafin,
+            foto:data.persona.foto,
+            valid_thru:data.valid_thru
+        }
+        this.data.props = props;
         this.mapPropsToData();
     }
 
     async setStructure(){
         // this.data.structure = (await axios.get('http://apipersona.estratek.com/organization/structure/silla', {headers:{wp: 'demo'}})).data;
         let structure = (await axios.get('http://apipersona.estratek.com/organization/structure/silla', {headers:{wp: 'demo'}})).data;
+        let structurePlaza = (await axios.get('http://apipersona.estratek.com/organization/structure/plaza', {headers:{wp: 'demo'}})).data;
+        structurePlaza = JSON.parse(structurePlaza.structure)
         this.data.structure = JSON.parse(structure.structure)
-        this.data.cleanStructure = _.omit(JSON.parse(structure.structure), [''])
+        this.data.structure.puesto = structurePlaza.puesto;
+        this.data.structure.plaza.hidden = true;
+        this.data.cleanStructure = _.omit(this.data.structure, ['nombre','activa'])
     }
     
     async setData(){
@@ -44,7 +62,7 @@ export default class Persona extends Generic{
     }   
     
     async setParent(){
-        this.data.parent = new Puesto(this.data.props.plaza._id);
+        this.data.parent = new Puesto(this.data.props.plaza);
         await this.data.parent.init();
     }
 
@@ -75,18 +93,33 @@ export default class Persona extends Generic{
     }
 
     mapDataToProps(){
-        this.data.props.persona.nombrepreferido = this.data.title;
+        this.data.props.nombre = this.data.title;
         this.data.props._id = this.data.id;
     }
 
     mapPropsToData(){
-        this.data.title = this.data.props.persona.nombrepreferido;
+        this.data.title = this.data.props.nombre;
+        this.data.img = this.data.props.foto;
         this.data.id = this.data.props._id;
     }
 
     async create(){
         try{
-            this.data.props = (await axios.post('http://apipersona.estratek.com/organization/silla',this.data.props,{headers:{wp:"demo"}})).data;
+            let newSilla = {
+                persona:this.data.props.persona,
+                nombre:this.data.props.nombre+' '+this.data.parent.data.props.nombre,
+                plaza:this.data.parent.data.id,
+                centrodecosto:this.data.props.centrodecosto,
+                horario:this.data.props.horario,
+                contrato:this.data.props.contrato,
+                salario:this.data.props.salario,
+                fechainicio:this.data.props.fechainicio,
+                fechafin:this.data.props.fechafin,
+                activa:true,
+                valid_thru:this.data.props.valid_thru
+            }
+            let silla = (await axios.post('http://apipersona.estratek.com/organization/silla',newSilla,{headers:{wp:"demo"}})).data;
+            this.setProps(silla);
             this.mapPropsToData();
             return this.data.props;
         }catch(e){

@@ -56,7 +56,7 @@ export default class Puesto extends Generic{
 
     async setChildren(){
         try{
-            let hijos = (await axios.get('http://apipersona.estratek.com/organization/silla?plaza='+this.data.id,{headers:{wp:"demo"}})).data;
+            let hijos = (await axios.get('http://apipersona.estratek.com/organization/silla?activa=true&plaza='+this.data.id,{headers:{wp:"demo"}})).data;
             this.data.children = await Promise.all(hijos.map(async (hijo)=>{
                 let classPersona = new Persona(hijo._id);
                 await classPersona.init(hijo);

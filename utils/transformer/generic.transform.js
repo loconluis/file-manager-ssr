@@ -4,6 +4,7 @@ export default class generic {
             id:id,
             type:type,
             icon:'',
+            img:'',
             title:'',
             structure: {},
             cleanStructure: {},
