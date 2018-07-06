@@ -53,7 +53,10 @@ export default class Cardy extends Component {
           </div>
           <div className="text-center cardy__icon">
             <p>
-              {!!this.props.single ? <img className='cardy__avatar' src={this.props.node.data.img} /> : <i className={this.props.node.data.icon}/>}
+              {!!this.props.single 
+                ? <img className='cardy__avatar' src={this.props.node.data.img} /> 
+                : <i className={this.props.node.data.icon}/>
+              }
             </p>
           </div>
         </div>
