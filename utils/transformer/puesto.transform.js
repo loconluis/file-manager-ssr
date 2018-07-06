@@ -130,7 +130,7 @@ export default class Puesto extends Generic{
                 descripcion:this.data.props.descripcion,
                 valid_tru:this.data.props.valid_thru
             }
-            let puesto = (await axios.put('http://apipersona.estratek.com/organization/puesto/'+plaza.puesto.id,editPuesto,{headers:{wp:"demo"}})).data;
+            let puesto = (await axios.put('http://apipersona.estratek.com/organization/puesto/'+plaza.puesto._id,editPuesto,{headers:{wp:"demo"}})).data;
             let editplaza = {
                 nombre:this.data.props.nombre,
                 area:this.data.props.area,
