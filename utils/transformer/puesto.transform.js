@@ -121,6 +121,7 @@ export default class Puesto extends Generic{
 
     async save(){
         try{
+            let plaza = (await axios.get('http://apipersona.estratek.com/organization/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
             let editPuesto = {
                 nombre:this.data.props.nombre,
                 perfilpuesto:this.data.props.perfilpuesto,
@@ -129,7 +130,7 @@ export default class Puesto extends Generic{
                 descripcion:this.data.props.descripcion,
                 valid_tru:this.data.props.valid_thru
             }
-            let puesto = (await axios.put('http://apipersona.estratek.com/organization/puesto/'+this.data.props.puesto,editPuesto,{headers:{wp:"demo"}})).data;
+            let puesto = (await axios.put('http://apipersona.estratek.com/organization/puesto/'+plaza.puesto.id,editPuesto,{headers:{wp:"demo"}})).data;
             let editplaza = {
                 nombre:this.data.props.nombre,
                 area:this.data.props.area,
@@ -138,7 +139,7 @@ export default class Puesto extends Generic{
                 centrodecosto:this.data.props.centrodecosto,
                 valid_thru:this.data.props.valid_thru
             }
-            let plaza = (await axios.put('http://apipersona.estratek.com/organization/plaza/'+this.data.props.id,editplaza,{headers:{wp:"demo"}})).data;
+            plaza = (await axios.put('http://apipersona.estratek.com/organization/plaza/'+this.data.props.id,editplaza,{headers:{wp:"demo"}})).data;
             this.setProps(plaza);
             this.mapPropsToData();
             return this.data.props;
