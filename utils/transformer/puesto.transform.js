@@ -83,7 +83,6 @@ export default class Puesto extends Generic{
 
     async getPossibleParents(){
         let area = (await axios.get('http://apipersona.estratek.com/organization/empresa/tree?empresa='+this.data.props.empresa,{headers:{wp:"demo"}})).data;
-        console.log("area",area);
         let posibleParents = [];
         let profundidad = -1;
         let recorrerHijos = function(node){
@@ -116,30 +115,40 @@ export default class Puesto extends Generic{
 
     async create(){
         try{
-            let nuevopuesto = {
-                nombre:this.data.props.nombre,
-                perfilpuesto:this.data.props.perfilpuesto,
-                familiapuesto:this.data.props.familiapuesto,
-                empresa:this.data.props.empresa,
-                descripcion:this.data.props.descripcion,
-                valid_tru:this.data.props.valid_thru
-            }
-            let puesto = (await axios.post('http://apipersona.estratek.com/organization/puesto/',nuevopuesto,{headers:{wp:"demo"}})).data;
-            let nuevaplaza = {
-                nombre:this.data.props.nombre,
-                area:this.data.props.area,
-                puesto:puesto._id,
-                cantidad:this.data.props.cantidad,
-                centrodecosto:this.data.props.centrodecosto,
-                valid_thru:this.data.props.valid_thru
-            }
-            let plaza = (await axios.post('http://apipersona.estratek.com/organization/plaza/',nuevaplaza,{headers:{wp:"demo"}})).data;
+            let puesto = await this.createPuesto();
+            let plaza = await this.createPlaza(puesto);
             this.setProps(plaza);
             this.mapPropsToData();
             return this.data.props;
         }catch(e){
             throw new Error(e);
         }
+    }
+
+    async createPlaza(puesto){
+        let nuevaplaza = {
+            nombre:this.data.props.nombre,
+            area:this.data.props.area,
+            puesto:puesto._id,
+            cantidad:this.data.props.cantidad,
+            centrodecosto:this.data.props.centrodecosto,
+            valid_thru:this.data.props.valid_thru
+        }
+        let plaza = (await axios.post('http://apipersona.estratek.com/organization/plaza/',nuevaplaza,{headers:{wp:"demo"}})).data;
+        return plaza;
+    }
+
+    async createPuesto(){
+        let nuevopuesto = {
+            nombre:this.data.props.nombre,
+            perfilpuesto:this.data.props.perfilpuesto,
+            familiapuesto:this.data.props.familiapuesto,
+            empresa:this.data.props.empresa,
+            descripcion:this.data.props.descripcion,
+            valid_tru:this.data.props.valid_thru
+        }
+        let puesto = (await axios.post('http://apipersona.estratek.com/organization/puesto/',nuevopuesto,{headers:{wp:"demo"}})).data;
+        return puesto;
     }
 
     async save(){
@@ -186,7 +195,12 @@ export default class Puesto extends Generic{
 
     async delete(){
         try{
-            let plaza = (await axios.delete('http://apipersona.estratek.com/organization/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
+            await this.setChildren();
+            if(this.data.children.length>0){
+                throw new Error('No es posible eliminar un puesto que contenga plazas activas');
+            }else{
+                let plaza = (await axios.delete('http://apipersona.estratek.com/organization/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
+            }
             return plaza;
         }catch(e){
             throw new Error(e);
