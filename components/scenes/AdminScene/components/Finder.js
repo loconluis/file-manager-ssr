@@ -20,9 +20,7 @@ class Finder extends Component {
   }
   // Core lifecycle on react
   async componentWillReceiveProps(nextProps) {
-    // console.log('this.props.nodeInstance', nextProps.nodeInstance)
-    // await nextProps.nodeInstance.setStructure()
-    // console.log('this.props.nodeInstance 2', nextProps.nodeInstance)
+    console.log('nextProps', nextProps)
     let structure =  mapDataToStructure(nextProps.nodeInstance.data.props, nextProps.nodeInstance.data.cleanStructure)
     // console.log('NewStructure', structure)
     this.setState(() => ({ _node2Show: nextProps.nodeInstance.data, structure }))
@@ -54,6 +52,7 @@ class Finder extends Component {
               showDetail={this.showDetail}
               handleDoubleClick={this.props.handleDoubleClick}
               handleOnClickButton={this.handleOnClickButton}
+              cardyOption={this.props.cardyOption}
             />
             {/*----------PATH SECTION----------*/}
             <Path path={this.state.path}/>

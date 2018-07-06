@@ -13,9 +13,8 @@ export default class Container extends React.Component {
               onDoubleClick={props.handleDoubleClick}
               node={_node}
               buttonClick={props.handleOnClickButton}
-            >
-              {_node.data.title}
-            </Cardy>  
+              cardyOption={props.cardyOption}
+            />
           </a>
         )
         break;
@@ -27,6 +26,7 @@ export default class Container extends React.Component {
               onDoubleClick={props.handleDoubleClick}
               node={_node}
               buttonClick={props.handleOnClickButton}
+              cardyOption={props.cardyOption}
             >
               {_node.data.title}
             </Cardy>  
@@ -41,6 +41,7 @@ export default class Container extends React.Component {
               onDoubleClick={props.handleDoubleClick}
               node={_node}
               buttonClick={props.handleOnClickButton}
+              cardyOption={props.cardyOption}
             >
               {_node.data.title}
             </Cardy>  
@@ -55,6 +56,7 @@ export default class Container extends React.Component {
             onDoubleClick={props.handleDoubleClick}
             node={_node}
             buttonClick={props.handleOnClickButton}
+            cardyOption={props.cardyOption}
           />
         </a>
         )
@@ -67,6 +69,7 @@ export default class Container extends React.Component {
             selectLeaf={props.showDetail}
             node={_node}
             buttonClick={props.handleOnClickButton}
+            cardyOption={props.cardyOption}
           >
             {_node.data.title}
           </Cardy>  
@@ -76,6 +79,7 @@ export default class Container extends React.Component {
     }
   }
   render () {
+    console.log('cardOption container', this.props.cardyOption)
     return (
       <div className="finderContainer__workzone-work">
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>

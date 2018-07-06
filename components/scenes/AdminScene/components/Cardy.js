@@ -24,13 +24,14 @@ export default class Cardy extends Component {
   }
 
   render() {
+    console.log('this.props.cardyOption', this.props.cardyOption)
     return (
       <div>
         <div className="cardy"
           onDoubleClick={this.handleDoubleClick}
         >
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <ButtonDropdown
+            {this.props.cardyOption && <ButtonDropdown
               direction="left"
               isOpen={this.state.dropdownOpen}
               toggle={this.toggleDropDown}
@@ -39,13 +40,16 @@ export default class Cardy extends Component {
                 <i className="fa fa-ellipsis-v" aria-hidden="true" />
               </DropdownToggle>
               <DropdownMenu>
-                <DropdownItem
-                  onClick={this.self}
-                >
-                  Detalle
-                </DropdownItem>
+                {this.props.cardyOption.map(_option => (
+                  <DropdownItem
+                    key={_option.label+'dpitem'}
+                    onClick={() => _option.func(this.props.node)}
+                  >
+                    {_option.label}
+                  </DropdownItem>
+                ))}
               </DropdownMenu>
-            </ButtonDropdown>
+            </ButtonDropdown>}
           </div>
           <div className="text-center cardy__icon">
             <p>
@@ -60,3 +64,9 @@ export default class Cardy extends Component {
     )
   }
 }
+
+{/*<DropdownItem
+                  onClick={this.self}
+                >
+                  Detalle
+                </DropdownItem>*/}
