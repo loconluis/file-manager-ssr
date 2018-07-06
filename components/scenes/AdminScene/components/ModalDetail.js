@@ -39,6 +39,7 @@ export default class ModalDetail extends Component {
   }
 
   render() {
+    console.log('strucutre on MODAL', this.state.showStructure)
     const { selectedOption } = this.state;
   	const value = selectedOption && selectedOption.value;
 
