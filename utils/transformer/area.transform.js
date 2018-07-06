@@ -97,7 +97,7 @@ export default class Area extends Generic{
         ]
     }
 
-    async getPosibleParents(){
+    async getPossibleParents(){
         let area = (await axios.get('http://apipersona.estratek.com/organization/empresa/tree?empresa='+this.data.props.empresa._id,{headers:{wp:"demo"}})).data;
         console.log("area",area);
         let posibleParents = [];

@@ -81,7 +81,7 @@ export default class Puesto extends Generic{
         ]
     }
 
-    async getPosibleParents(){
+    async getPossibleParents(){
         let area = (await axios.get('http://apipersona.estratek.com/organization/empresa/tree?empresa='+this.data.props.empresa,{headers:{wp:"demo"}})).data;
         console.log("area",area);
         let posibleParents = [];
@@ -176,7 +176,7 @@ export default class Puesto extends Generic{
             let editplaza = {
                 area:parentId
             }
-            let plaza = (await axios.put('http://apipersona.estratek.com/organization/plaza/'+this.data.props.id,editplaza,{headers:{wp:"demo"}})).data;
+            let plaza = (await axios.put('http://apipersona.estratek.com/organization/plaza/'+this.data.id,editplaza,{headers:{wp:"demo"}})).data;
             this.setProps(plaza);
             this.mapPropsToData();
         }catch(e){

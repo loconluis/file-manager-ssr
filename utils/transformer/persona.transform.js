@@ -45,11 +45,12 @@ export default class Persona extends Generic{
     
     async setParent(){
         this.data.parent = new Puesto(this.data.props.plaza._id);
-        this.data.parent.init();
+        await this.data.parent.init();
     }
 
-    async getPosibleParents(){
-        let plazas = (await axios.get('http://apipersona.estratek.com/organization/plaza/tree?empresa='+this.data.parent.props.empresa,{headers:{wp:"demo"}})).data;
+    async getPossibleParents(){
+        await this.setParent();
+        let plazas = (await axios.get('http://apipersona.estratek.com/organization/plaza/tree?empresa='+this.data.parent.data.props.empresa,{headers:{wp:"demo"}})).data;
         let posibleParents = [];
         let profundidad = -1;
         let recorrerHijos = function(node){

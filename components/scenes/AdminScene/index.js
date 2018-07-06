@@ -17,8 +17,10 @@ class AreaScene extends React.Component {
     modalAddIsOpen: false,
     modalEditIsOpen: false,
     modalViewIsOpen: false,
+    modalMoveIsOpen: false,
     nodeAux: { data:{} },
-    structure2Add: {}
+    structure2Add: {},
+    options: []
   }
   // Core function on React
   async componentDidMount() {
@@ -99,6 +101,17 @@ class AreaScene extends React.Component {
   toggleView =  () => {
     this.setState((prevState) => ({ modalViewIsOpen: !prevState.modalViewIsOpen }))
   }
+  // ToggleMoveModal
+  toggleMove = async (node) => {
+    // console.log('node on Move', node)
+    if (node.data) {
+      let options = await node.getPossibleParents()
+      this.setState((prevState) => ({ options, modalMoveIsOpen: !prevState.modalMoveIsOpen, nodeAux: node }))
+    } else {
+      this.setState((prevState) => ({ modalMoveIsOpen: !prevState.modalMoveIsOpen }))
+    }
+    // console.log('node on Move s ---->', s)
+  }
   // Handle create node for finder
   onCreate = async (node) => {
     this.state.nodeAux.data.props = node.form;
@@ -123,13 +136,12 @@ class AreaScene extends React.Component {
     console.log('holi')
   }
   // Handle delete node for finder
-  onDelete = (node) => {
-    console.log('node on Delete', node)
+  onDelete = async (node) => {
     if(window.confirm('¿Deseas eliminar ' + node.data.title + '?')) {
       try{
-        node.delete()
+        await node.delete()
       } catch (e) {
-        console.log('Error', e)
+        alert('No se puede eliminar ' + node.data.type)
       }
     } else {
       console.log('Se declino la decision')
@@ -138,6 +150,12 @@ class AreaScene extends React.Component {
   // handler to close the modal
   onClose = () => {
     this.setState(() => ({ modalIsOpen: false }))
+  }
+  // Handle On Change to move a node
+  onChangeMove = (selectedOption) => {
+    // console.log('this.node.aux', this.state.nodeAux)
+    this.state.nodeAux.move(selectedOption.value)
+    // console.log('selectedOption on index', selectedOption)
   }
   // Check implict data to structure
   getImplictData = (type, structure) => {
@@ -189,13 +207,17 @@ class AreaScene extends React.Component {
         func: this.showNode
       },
       {
+        label: 'Mover',
+        func: this.toggleMove
+      },
+      {
         label: 'Editar',
         func: this.toggleEdit
       },
       {
         label: 'Eliminar',
         func: this.onDelete
-      }
+      },
     ]
     return (
       <div>
@@ -209,6 +231,7 @@ class AreaScene extends React.Component {
               modalOpen={this.state.modalViewIsOpen}
               structureMapped={this.state.nodeInstance.data.cleanStructure}
               toggle={this.toggleView}
+              form
             />
             {/*Add Modal info*/}
             <ModalDetail
@@ -219,6 +242,7 @@ class AreaScene extends React.Component {
               structureMapped={this.state.nodeAux.data.cleanStructure}
               toggle={this.toggleAdd}
               onCreate={this.onCreate}
+              form
             />
             {/*Edit Modal info*/}
             <ModalDetail
@@ -229,6 +253,15 @@ class AreaScene extends React.Component {
               structureMapped={this.state.nodeAux.data.cleanStructure}
               toggle={this.toggleEdit}
               onCreate={this.onEdit}
+              form
+            />
+            {/*---Modal to Move---*/}
+            <ModalDetail
+              key={4}
+              modalOpen={this.state.modalMoveIsOpen}
+              options={this.state.options}
+              toggle={this.toggleMove}
+              onCreate={this.onChangeMove}
             />
           </div>}
         <Finder
