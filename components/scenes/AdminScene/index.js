@@ -123,7 +123,17 @@ class AreaScene extends React.Component {
     console.log('holi')
   }
   // Handle delete node for finder
-  onDelete = (id) => {
+  onDelete = (node) => {
+    console.log('node on Delete', node)
+    if(window.confirm('¿Deseas eliminar ' + node.data.title + '?')) {
+      try{
+        node.delete()
+      } catch (e) {
+        console.log('Error', e)
+      }
+    } else {
+      console.log('Se declino la decision')
+    }
   }
   // handler to close the modal
   onClose = () => {
@@ -181,6 +191,10 @@ class AreaScene extends React.Component {
       {
         label: 'Editar',
         func: this.toggleEdit
+      },
+      {
+        label: 'Eliminar',
+        func: this.onDelete
       }
     ]
     return (

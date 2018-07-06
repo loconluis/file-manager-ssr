@@ -190,7 +190,7 @@ export default class Puesto extends Generic{
     async delete(){
         try{
             let plaza = (await axios.delete('http://apipersona.estratek.com/organization/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
-            return empresa;
+            return plaza;
         }catch(e){
             console.log(e);
         }
