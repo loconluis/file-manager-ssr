@@ -24,6 +24,7 @@ export default class Persona extends Generic{
 
     setProps(data){
         let props = {
+            _id:data._id,
             persona:data.persona._id,
             nombre:data.persona.nombrepreferido,
             puesto:data.plaza.puesto,
@@ -77,7 +78,7 @@ export default class Persona extends Generic{
             for(let i = 0; i<=profundidad;i++){
                 dash += '--';
             }
-            posibleParents.push({'label':dash+node.puesto.nombre,'value':node._id});
+            posibleParents.push({'label':dash+node.puesto.nombre+" ("+node.sillas.length+"/"+node.cantidad+")",'value':node._id});
             if(node.children.length>0){
                 node.children.map((hijo)=>{
                     recorrerHijos(hijo);
@@ -105,9 +106,11 @@ export default class Persona extends Generic{
 
     async create(){
         try{
+            let plaza = (await axios.get('http://apipersona.estratek.com/organization/plaza/'+this.data.props.plaza+"?populate=",{headers:{wp:"demo"}})).data;
+            let persona = (await axios.get('http://apipersona.estratek.com/persona/persona/'+this.data.props.persona+"?populate=",{headers:{wp:"demo"}})).data;
             let newSilla = {
                 persona:this.data.props.persona,
-                nombre:this.data.props.nombre+' '+this.data.parent.data.props.nombre,
+                nombre:persona.nombrepreferido+" "+plaza.nombre,
                 plaza:this.data.props.plaza,
                 centrodecosto:this.data.props.centrodecosto,
                 horario:this.data.props.horario,
@@ -128,8 +131,47 @@ export default class Persona extends Generic{
     }
 
     async save(){
-        try{
-            this.data.props = (await axios.put('http://apipersona.estratek.com/organization/silla/'+this.data.id,this.data.props,{headers:{wp:"demo"}})).data;
+        try{ 
+            var plaza = (await axios.get('http://apipersona.estratek.com/organization/plaza/'+this.data.props.plaza,{headers:{wp:"demo"}})).data;
+            var persona = (await axios.get('http://apipersona.estratek.com/persona/persona/'+this.data.props.persona+"?populate=",{headers:{wp:"demo"}})).data;
+
+            //Verificar si cambio de puesto
+            if(this.data.props.puesto!=plaza.puesto){
+                console.log("cambio de puesto");
+                //Ver si ya existe plaza con el nuevo puesto
+                let existeplaza = (await axios.get('http://apipersona.estratek.com/organization/plaza?populate=&puesto='+this.data.props.puesto+'&area='+plaza.area._id,{headers:{wp:"demo"}})).data;
+                console.log("existeplaza",existeplaza);
+                if(existeplaza.length>0){
+                    //si existe plaza
+                    plaza = existeplaza[0];
+                    console.log("plaza existente",plaza);
+                }else{
+                    let plazaIntance = new Puesto(null);
+                    let nuevoPuesto = (await axios.get('http://apipersona.estratek.com/organization/puesto/'+this.data.props.puesto,{headers:{wp:"demo"}})).data;
+                    plaza.puesto = nuevoPuesto;
+                    plazaIntance.setProps(plaza);
+                    
+                    console.log("plaza plazaIntance",plazaIntance.data.props);
+                    plazaIntance.setProps(await plazaIntance.createPlaza(nuevoPuesto));
+                    plaza = plazaIntance.data.props;
+                }
+            }
+            console.log("plaza a colocar", plaza);
+            let editsilla = {
+                persona:this.data.props.persona,
+                nombre:persona.nombrepreferido+" "+plaza.nombre,
+                plaza:plaza._id,
+                centrodecosto:this.data.props.centrodecosto,
+                horario:this.data.props.horario,
+                contrato:this.data.props.contrato,
+                salario:this.data.props.salario,
+                fechainicio:this.data.props.fechainicio,
+                fechafin:this.data.props.fechafin,
+                activa:true,
+                valid_thru:this.data.props.valid_thru
+            };
+            let silla = (await axios.post('http://apipersona.estratek.com/organization/silla',editsilla,{headers:{wp:"demo"}})).data;
+            this.setProps(silla);
             this.mapPropsToData();
             return this.data.props;
         }catch(e){
@@ -138,11 +180,24 @@ export default class Persona extends Generic{
     }
 
     async move(parentId){
+        if(this.data.props.plaza==parentId)return true;
         try{
+            let plaza = (await axios.get('http://apipersona.estratek.com/organization/plaza/'+this.data.props.plaza+"?populate=",{headers:{wp:"demo"}})).data;
+            let persona = (await axios.get('http://apipersona.estratek.com/persona/persona/'+this.data.props.persona+"?populate=",{headers:{wp:"demo"}})).data;
             let editsilla = {
-                plaza:parentId
-            }
-            let silla = (await axios.put('http://apipersona.estratek.com/organization/silla/'+this.data.props.id,editsilla,{headers:{wp:"demo"}})).data;
+                persona:this.data.props.persona,
+                nombre:persona.nombrepreferido+" "+plaza.nombre,
+                plaza:parentId,
+                centrodecosto:this.data.props.centrodecosto,
+                horario:this.data.props.horario,
+                contrato:this.data.props.contrato,
+                salario:this.data.props.salario,
+                fechainicio:new Date(),
+                fechafin:null,
+                activa:true,
+                valid_thru:this.data.props.valid_thru
+            };
+            let silla = (await axios.post('http://apipersona.estratek.com/organization/silla/',editsilla,{headers:{wp:"demo"}})).data;
             this.setProps(silla);
             this.mapPropsToData();
         }catch(e){
