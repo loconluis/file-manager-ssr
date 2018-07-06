@@ -48,6 +48,31 @@ export default class Persona extends Generic{
         this.data.parent.init();
     }
 
+    async getPosibleParents(){
+        let plazas = (await axios.get('http://apipersona.estratek.com/organization/plaza/tree?empresa='+this.data.parent.props.empresa,{headers:{wp:"demo"}})).data;
+        let posibleParents = [];
+        let profundidad = -1;
+        let recorrerHijos = function(node){
+            profundidad++;
+            let dash = '';
+            for(let i = 0; i<=profundidad;i++){
+                dash += '--';
+            }
+            posibleParents.push({'label':dash+node.puesto.nombre,'value':node._id});
+            if(node.children.length>0){
+                node.children.map((hijo)=>{
+                    recorrerHijos(hijo);
+                });
+            }
+            profundidad--;
+        }
+        plazas.map((plaza)=>{
+            recorrerHijos(plaza);
+            profundidad = -1;
+        });
+        return posibleParents;
+    }
+
     mapDataToProps(){
         this.data.props.persona.nombrepreferido = this.data.title;
         this.data.props._id = this.data.id;
@@ -64,7 +89,7 @@ export default class Persona extends Generic{
             this.mapPropsToData();
             return this.data.props;
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 
@@ -74,7 +99,7 @@ export default class Persona extends Generic{
             this.mapPropsToData();
             return this.data.props;
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 
@@ -87,16 +112,16 @@ export default class Persona extends Generic{
             this.setProps(silla);
             this.mapPropsToData();
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 
     async delete(){
         try{
-            let empresa = (await axios.delete('http://apipersona.estratek.com/organization/silla/'+this.data.id,{headers:{wp:"demo"}})).data;
-            return empresa;
+            let persona = (await axios.delete('http://apipersona.estratek.com/organization/silla/'+this.data.id,{headers:{wp:"demo"}})).data;
+            return persona;
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 

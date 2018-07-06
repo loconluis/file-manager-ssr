@@ -136,7 +136,7 @@ export default class Area extends Generic{
             this.mapPropsToData();
             return this.data.props;
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 
@@ -146,7 +146,7 @@ export default class Area extends Generic{
             this.mapPropsToData();
             return this.data.props;
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 
@@ -159,7 +159,7 @@ export default class Area extends Generic{
             this.setProps(area);
             this.mapPropsToData();
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 
@@ -168,7 +168,7 @@ export default class Area extends Generic{
             let empresa = (await axios.delete('http://apipersona.estratek.com/organization/area/'+this.data.id,{headers:{wp:"demo"}})).data;
             return empresa;
         }catch(e){
-            console.log(e);
+            throw new Error(e);
         }
     }
 }
