@@ -165,7 +165,7 @@ export default class Puesto extends Generic{
                 centrodecosto:this.data.props.centrodecosto,
                 valid_thru:this.data.props.valid_thru
             }
-            plaza = (await axios.put('http://apipersona.estratek.com/organization/plaza/'+this.data.props.id,editplaza,{headers:{wp:"demo"}})).data;
+            plaza = (await axios.put('http://apipersona.estratek.com/organization/plaza/'+this.data.id,editplaza,{headers:{wp:"demo"}})).data;
             this.setProps(plaza);
             this.mapPropsToData();
             return this.data.props;

@@ -3,7 +3,7 @@ import React from 'react'
 import Finder from './components/Finder'
 import ModalDetail from './components/ModalDetail'
 // Helper functions
-import { Transformer } from '../../../utils/transformer'
+import { Transformer, mapDataToStructure } from '../../../utils/transformer'
 // HOC for router on next
 import { withRouter } from 'next/router'
 // StyleS
@@ -15,8 +15,9 @@ class AreaScene extends React.Component {
   state = {
     nodeInstance: {},
     modalAddIsOpen: false,
+    modalEditIsOpen: false,
     modalViewIsOpen: false,
-    nodoAux: { data:{} },
+    nodeAux: { data:{} },
     structure2Add: {}
   }
   // Core function on React
@@ -62,6 +63,10 @@ class AreaScene extends React.Component {
   showDetail = () => {
     this.setState((prevState) => ({ show: !prevState.show }))
   }
+  // Handle Detail of node
+  showNode = (node) => {
+    console.log('node of showing', node)
+  }
   // handleDoubleClick on node
   handleDoubleClick = async (validators) => {
     const { id, type } = validators
@@ -74,9 +79,20 @@ class AreaScene extends React.Component {
       await str.init()
       await str.setStructure()
       str.data.cleanStructure = this.getImplictData(type, str.data.cleanStructure)
-      return this.setState((prevState) => ({modalAddIsOpen: !prevState.modalAddIsOpen, nodoAux: str }))
+      return this.setState((prevState) => ({modalAddIsOpen: !prevState.modalAddIsOpen, nodeAux: str }))
     } else {
       return this.setState((prevState) => ({modalAddIsOpen: !prevState.modalAddIsOpen }))
+    }
+  }
+  // ToggleEditModal
+  toggleEdit = async (node) => {
+    console.log('toggleEdit', node)
+    if (node.data) {
+      await node.setStructure()
+      node.data.cleanStructure = mapDataToStructure(node.data.props, node.data.cleanStructure)
+      this.setState((prevState) => ({ modalEditIsOpen: !prevState.modalEditIsOpen, nodeAux: node }))
+    } else {
+      this.setState((prevState) => ({ modalEditIsOpen: !prevState.modalEditIsOpen }))
     }
   }
   // ToggleViewModal
@@ -84,20 +100,35 @@ class AreaScene extends React.Component {
     this.setState((prevState) => ({ modalViewIsOpen: !prevState.modalViewIsOpen }))
   }
   // Handle create node for finder
-  onCreate = (node) => {
-    this.setState(() => ({modalAddIsOpen: false }))
-    this.state.nodoAux.data.props = node.form;
+  onCreate = async (node) => {
+    this.state.nodeAux.data.props = node.form;
     console.log('node', node)
-    console.log('node', this.state.nodoAux)
+    console.log('node', this.state.nodeAux)
+    await this.state.nodeAux.create()
+    let _nodeIn = this.state.nodeInstance
+    _nodeIn.data.children = [..._nodeIn.data.children, this.state.nodeAux]
+    this.setState(() => ({ 
+      modalAddIsOpen: false,
+      nodeInstance: _nodeIn
+    }))
   }
   // Handle edit node for finder
-  onEdit = (updates, id) => {
+  onEdit = async (node) => {
+    let x = this.state.nodeInstance.data.children.filter(el => el.data.id === node.form._id)
+    x[0].data.props = node.form
+    await x[0].save()
+    this.setState(() => ({
+      modalEditIsOpen: false,
+    }))
+    console.log('holi')
   }
   // Handle delete node for finder
   onDelete = (id) => {
   }
   // handler to close the modal
-  onClose = () => this.setState(() => ({ modalIsOpen: false }))
+  onClose = () => {
+    this.setState(() => ({ modalIsOpen: false }))
+  }
   // Check implict data to structure
   getImplictData = (type, structure) => {
     console.log('structure on getImplictData', structure)
@@ -142,10 +173,21 @@ class AreaScene extends React.Component {
   }
   // render of finder
   render() {
+    let cardOption = [
+      {
+        label: 'Detalle',
+        func: this.showNode
+      },
+      {
+        label: 'Editar',
+        func: this.toggleEdit
+      }
+    ]
     return (
       <div>
         {this.state.nodeInstance.data && 
           <div id='modal_container'>
+            {/*View Modal Info*/}
             <ModalDetail
               key={1}
               readOnly={true}
@@ -154,14 +196,25 @@ class AreaScene extends React.Component {
               structureMapped={this.state.nodeInstance.data.cleanStructure}
               toggle={this.toggleView}
             />
+            {/*Add Modal info*/}
             <ModalDetail
               key={2}
               readOnly={false}
               title={this.state.nodeInstance.data.title}
               modalOpen={this.state.modalAddIsOpen}
-              structureMapped={this.state.nodoAux.data.cleanStructure}
+              structureMapped={this.state.nodeAux.data.cleanStructure}
               toggle={this.toggleAdd}
               onCreate={this.onCreate}
+            />
+            {/*Edit Modal info*/}
+            <ModalDetail
+              key={3}
+              readOnly={false}
+              title={this.state.nodeInstance.data.title}
+              modalOpen={this.state.modalEditIsOpen}
+              structureMapped={this.state.nodeAux.data.cleanStructure}
+              toggle={this.toggleEdit}
+              onCreate={this.onEdit}
             />
           </div>}
         <Finder
@@ -171,6 +224,7 @@ class AreaScene extends React.Component {
           handleAddNode={this.toggleAdd}
           handleViewNode={this.toggleView}
           showDetail={this.showDetail}
+          cardyOption={cardOption}
         />
       </div>
     )
