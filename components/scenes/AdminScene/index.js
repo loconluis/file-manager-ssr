@@ -3,7 +3,7 @@ import React from 'react'
 import Finder from './components/Finder'
 import ModalDetail from './components/ModalDetail'
 // Helper functions
-import { Transformer, mapDataToStructure } from '../../../utils/transformer'
+import { Transformer, mapDataToStructure, getParentArr } from '../../../utils/transformer'
 // HOC for router on next
 import { withRouter } from 'next/router'
 // StyleS
@@ -20,7 +20,8 @@ class AreaScene extends React.Component {
     modalMoveIsOpen: false,
     nodeAux: { data:{} },
     structure2Add: {},
-    options: []
+    options: [],
+    path: []
   }
   // Core function on React
   async componentDidMount() {
@@ -33,13 +34,15 @@ class AreaScene extends React.Component {
       await nodeInstance.init();
       await nodeInstance.setData();
       await nodeInstance.setStructure()
-      return this.setState(() => ({ nodeInstance }))
+      let path = getParentArr(nodeInstance)
+      return this.setState(() => ({ nodeInstance, path: path.reverse() }))
     } else {
       let nodeInstance = Transformer(nodeID, nodeType);
       await nodeInstance.init();
       await nodeInstance.setData();
       await nodeInstance.setStructure()
-      return this.setState(() => ({ nodeInstance }))
+      let path = getParentArr(nodeInstance)
+      return this.setState(() => ({ nodeInstance, path: path.reverse() }))
     }
   }
   // Core function on React
@@ -52,13 +55,15 @@ class AreaScene extends React.Component {
       await nodeInstance.init();
       await nodeInstance.setData();
       await nodeInstance.setStructure()
-      return this.setState(() => ({ nodeInstance }))
+      let path = getParentArr(nodeInstance)
+      return this.setState(() => ({ nodeInstance, path: path.reverse() }))
     } else {
       let nodeInstance = Transformer(nodeID, nodeType);
       await nodeInstance.init();
       await nodeInstance.setData();
       await nodeInstance.setStructure()
-      return this.setState(() => ({ nodeInstance }))
+      let path = getParentArr(nodeInstance)
+      return this.setState(() => ({ nodeInstance, path: path.reverse() }))
     }
   }
   // Handle show details
@@ -232,7 +237,6 @@ class AreaScene extends React.Component {
         func: this.onDelete
       },
     ]
-    console.log('nodeInstance', this.state.nodeInstance)
     return (
       <div>
         {this.state.nodeInstance.data && 
@@ -286,6 +290,7 @@ class AreaScene extends React.Component {
           handleViewNode={this.toggleView}
           showDetail={this.showDetail}
           cardyOption={cardOption}
+          path={this.state.path}
         />
       </div>
     )

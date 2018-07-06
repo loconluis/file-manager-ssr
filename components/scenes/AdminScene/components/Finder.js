@@ -55,7 +55,7 @@ class Finder extends Component {
               cardyOption={this.props.cardyOption}
             />
             {/*----------PATH SECTION----------*/}
-            <Path path={this.state.path}/>
+            <Path path={this.props.path}/>
           </div>
           {this.state.show && 
             <Detail
