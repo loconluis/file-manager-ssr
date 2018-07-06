@@ -20,7 +20,8 @@ class AreaScene extends React.Component {
     modalMoveIsOpen: false,
     nodeAux: { data:{} },
     structure2Add: {},
-    options: []
+    options: [],
+    path: []
   }
   // Core function on React
   async componentDidMount() {
@@ -33,15 +34,15 @@ class AreaScene extends React.Component {
       await nodeInstance.init();
       await nodeInstance.setData();
       await nodeInstance.setStructure()
-      console.log('getParArr', getParentArr(nodeInstance))
-      return this.setState(() => ({ nodeInstance }))
+      let path = getParentArr(nodeInstance)
+      return this.setState(() => ({ nodeInstance, path: path.reverse() }))
     } else {
       let nodeInstance = Transformer(nodeID, nodeType);
       await nodeInstance.init();
       await nodeInstance.setData();
       await nodeInstance.setStructure()
-      console.log('getParArr', getParentArr(nodeInstance))
-      return this.setState(() => ({ nodeInstance }))
+      let path = getParentArr(nodeInstance)
+      return this.setState(() => ({ nodeInstance, path: path.reverse() }))
     }
   }
   // Core function on React
@@ -54,13 +55,15 @@ class AreaScene extends React.Component {
       await nodeInstance.init();
       await nodeInstance.setData();
       await nodeInstance.setStructure()
-      return this.setState(() => ({ nodeInstance }))
+      let path = getParentArr(nodeInstance)
+      return this.setState(() => ({ nodeInstance, path: path.reverse() }))
     } else {
       let nodeInstance = Transformer(nodeID, nodeType);
       await nodeInstance.init();
       await nodeInstance.setData();
       await nodeInstance.setStructure()
-      return this.setState(() => ({ nodeInstance }))
+      let path = getParentArr(nodeInstance)
+      return this.setState(() => ({ nodeInstance, path: path.reverse() }))
     }
   }
   // Handle show details
@@ -287,6 +290,7 @@ class AreaScene extends React.Component {
           handleViewNode={this.toggleView}
           showDetail={this.showDetail}
           cardyOption={cardOption}
+          path={this.state.path}
         />
       </div>
     )
