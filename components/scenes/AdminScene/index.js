@@ -159,6 +159,7 @@ class AreaScene extends React.Component {
   }
   // Check implict data to structure
   getImplictData = (type, structure) => {
+    console.log('node type', type)
     console.log('structure on getImplictData', structure)
     switch (type) {
       case 'area':
@@ -192,7 +193,19 @@ class AreaScene extends React.Component {
         }
         break;
       case 'persona':
-        return structure
+        return {
+          ...structure,
+          plaza: {
+            ...structure.plaza,
+            disabled: true,
+            value: this.state.nodeInstance.data.id
+          },
+          puesto: {
+            ...structure.puesto,
+            disabled: true,
+            value: this.state.nodeInstance.data.props.puesto
+          }
+        }
         break;
       case 'empresa':
         return structure
@@ -219,6 +232,7 @@ class AreaScene extends React.Component {
         func: this.onDelete
       },
     ]
+    console.log('nodeInstance', this.state.nodeInstance)
     return (
       <div>
         {this.state.nodeInstance.data && 
