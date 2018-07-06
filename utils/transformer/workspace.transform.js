@@ -46,7 +46,6 @@ export default class Workspace extends Generic{
         }catch(e){
             console.log(e);
         }
-
     }  
 
     async setParent(){

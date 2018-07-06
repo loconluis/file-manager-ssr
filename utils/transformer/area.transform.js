@@ -73,7 +73,6 @@ export default class Area extends Generic{
         }catch(e){
             console.log(e);
         }
-
     }   
 
     async setParent(){
@@ -98,8 +97,12 @@ export default class Area extends Generic{
         ]
     }
 
-        mapDataToProps(){
-        this.data.props.nombre = this.data.title;
+    async getPosibleParents(){
+        let hijos = (await axios.get('http://apipersona.estratek.com/organization/area/finderchilds?area='+this.data.id,{headers:{wp:"demo"}})).data;
+    }
+
+    mapDataToProps(){
+        his.data.props.nombre = this.data.title;
         this.data.props._id = this.data.id;
     }
 
@@ -123,6 +126,19 @@ export default class Area extends Generic{
             this.data.props = (await axios.put('http://apipersona.estratek.com/organization/area/'+this.data.id,this.data.props,{headers:{wp:"demo"}})).data;
             this.mapPropsToData();
             return this.data.props;
+        }catch(e){
+            console.log(e);
+        }
+    }
+
+    async move(parentId){
+        try{
+            let editarea = {
+                areapadre:parentId
+            }
+            let area = (await axios.put('http://apipersona.estratek.com/organization/area/'+this.data.props.id,editarea,{headers:{wp:"demo"}})).data;
+            this.setProps(area);
+            this.mapPropsToData();
         }catch(e){
             console.log(e);
         }

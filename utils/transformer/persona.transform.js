@@ -78,6 +78,19 @@ export default class Persona extends Generic{
         }
     }
 
+    async move(parentId){
+        try{
+            let editsilla = {
+                plaza:parentId
+            }
+            let silla = (await axios.put('http://apipersona.estratek.com/organization/silla/'+this.data.props.id,editsilla,{headers:{wp:"demo"}})).data;
+            this.setProps(silla);
+            this.mapPropsToData();
+        }catch(e){
+            console.log(e);
+        }
+    }
+
     async delete(){
         try{
             let empresa = (await axios.delete('http://apipersona.estratek.com/organization/silla/'+this.data.id,{headers:{wp:"demo"}})).data;

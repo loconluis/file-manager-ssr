@@ -147,6 +147,19 @@ export default class Puesto extends Generic{
         }
     }
 
+    async move(parentId){
+        try{
+            let editplaza = {
+                area:parentId
+            }
+            let plaza = (await axios.put('http://apipersona.estratek.com/organization/plaza/'+this.data.props.id,editplaza,{headers:{wp:"demo"}})).data;
+            this.setProps(plaza);
+            this.mapPropsToData();
+        }catch(e){
+            console.log(e);
+        }
+    }
+
     async delete(){
         try{
             let plaza = (await axios.delete('http://apipersona.estratek.com/organization/plaza/'+this.data.id,{headers:{wp:"demo"}})).data;
