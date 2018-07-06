@@ -38,6 +38,7 @@ body {
   border: 1px solid gold;
 }
 .finderContainer__workzone-footer {
+  display: flex;
   height: 5vh;
   border: 1px solid black;
 }

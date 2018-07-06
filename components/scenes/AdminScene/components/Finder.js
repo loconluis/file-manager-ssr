@@ -23,7 +23,7 @@ class Finder extends Component {
     console.log('nextProps', nextProps)
     let structure =  mapDataToStructure(nextProps.nodeInstance.data.props, nextProps.nodeInstance.data.cleanStructure)
     // console.log('NewStructure', structure)
-    this.setState(() => ({ _node2Show: nextProps.nodeInstance.data, structure }))
+    this.setState(() => ({ _node2Show: nextProps.nodeInstance.data, structure, show: this.props.show }))
   }
   // Handler show Detail
   showDetail = () => {
@@ -35,6 +35,7 @@ class Finder extends Component {
   }
   // Core function to render
   render() {
+    console.log('this.detailNode', this.props.detailNode)
     return (
       <div className="finderContainer">
           <div className="finderContainer__workzone">
@@ -57,10 +58,10 @@ class Finder extends Component {
             {/*----------PATH SECTION----------*/}
             <Path path={this.props.path}/>
           </div>
-          {this.state.show && 
+          {this.props.show && 
             <Detail
-              node={this.state.clickNode}
-              showDetail={this.showDetail}
+              node={this.props.detailNode}
+              showDetail={this.props.showDetail}
             />}
       </div>
     )

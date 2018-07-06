@@ -19,9 +19,9 @@ class AreaScene extends React.Component {
     modalViewIsOpen: false,
     modalMoveIsOpen: false,
     nodeAux: { data:{} },
-    structure2Add: {},
     options: [],
-    path: []
+    path: [],
+    show: false,
   }
   // Core function on React
   async componentDidMount() {
@@ -66,13 +66,16 @@ class AreaScene extends React.Component {
       return this.setState(() => ({ nodeInstance, path: path.reverse() }))
     }
   }
-  // Handle show details
-  showDetail = () => {
-    this.setState((prevState) => ({ show: !prevState.show }))
-  }
   // Handle Detail of node
-  showNode = (node) => {
-    console.log('node of showing', node)
+  showNode = async (node) => {
+    if (node.data) {
+      console.log('node of showing', node)
+      await node.setStructure()
+      node.data.cleanStructure = mapDataToStructure(node.data.props, node.data.cleanStructure)
+      this.setState((prevState) => ({ show: !prevState.show, nodeAux: node }))
+    }else {
+      this.setState((prevState) => ({ show: !prevState.show, nodeAux: { data:{} }}))
+    }
   }
   // handleDoubleClick on node
   handleDoubleClick = async (validators) => {
@@ -145,8 +148,12 @@ class AreaScene extends React.Component {
     if(window.confirm('¿Deseas eliminar ' + node.data.title + '?')) {
       try{
         await node.delete()
+        let _nodeIn = this.state.nodeInstance
+        _nodeIn.data.children = _nodeIn.data.children.filter(el => el.data.id !== node.data.id)
+        this.setState(() => ({ nodeInstance: _nodeIn }))
       } catch (e) {
         alert('No se puede eliminar ' + node.data.type)
+        console.log('e', e)
       }
     } else {
       console.log('Se declino la decision')
@@ -219,6 +226,7 @@ class AreaScene extends React.Component {
   }
   // render of finder
   render() {
+    console.log('this.state.nodeInst', this.state.nodeInstance)
     let cardOption = [
       {
         label: 'Detalle',
@@ -288,9 +296,11 @@ class AreaScene extends React.Component {
           // handleOnClickButton={this.handleOnClickButton}
           handleAddNode={this.toggleAdd}
           handleViewNode={this.toggleView}
-          showDetail={this.showDetail}
           cardyOption={cardOption}
           path={this.state.path}
+          show={this.state.show}
+          showDetail={this.showNode}
+          detailNode={this.state.nodeAux.data.cleanStructure}
         />
       </div>
     )
